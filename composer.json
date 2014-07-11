@@ -1,0 +1,16 @@
+{
+  "name": "donquixote/cellbrush",
+  "type": "library",
+  "description": "Library to generate HTML tables.",
+  "homepage": "http://github.com/donquixote/cellbrush",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Andreas Hennings",
+      "email": "andreas@dqxtech.net"
+    }
+  ],
+  "autoload": {
+    "psr-4": { "Donquixote\\Cellbrush\\": "src/" }
+  }
+}
