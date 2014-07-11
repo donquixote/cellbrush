@@ -74,6 +74,16 @@ class Table {
   }
 
   /**
+   * @param string $colName
+   *
+   * @return SectionColHandle
+   */
+  function colHandle($colName) {
+    $this->columns->verifyColName($colName);
+    return new TableColHandle($this, $this->tbody, $colName);
+  }
+
+  /**
    * @return TableSection
    */
   function thead() {
@@ -121,6 +131,29 @@ class Table {
   function addRowNames(array $rowNames) {
     $this->tbody->addRowNames($rowNames);
     return $this;
+  }
+
+  /**
+   * @param string $rowName
+   *
+   * @return RowHandle
+   * @throws \Exception
+   */
+  public function rowHandle($rowName) {
+    return $this->tbody->rowHandle($rowName);
+  }
+
+  /**
+   * Adds a row and returns the row handle.
+   * This is a hybrid of addRowName() and rowHandle().
+   *
+   * @param $rowName
+   *
+   * @return RowHandle
+   * @throws \Exception
+   */
+  public function addRow($rowName) {
+    return $this->tbody->addRow($rowName);
   }
 
   /**

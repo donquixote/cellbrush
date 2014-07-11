@@ -32,6 +32,17 @@ class TableSection {
   }
 
   /**
+   * @param string $colName
+   *
+   * @return SectionColHandle
+   * @throws \Exception
+   */
+  public function colHandle($colName) {
+    $this->columns->verifyColName($colName);
+    return new SectionColHandle($this, $colName);
+  }
+
+  /**
    * @param string $rowName
    *
    * @return $this
@@ -55,6 +66,36 @@ class TableSection {
       $this->addRowName($rowName);
     }
     return $this;
+  }
+
+  /**
+   * @param string $rowName
+   *
+   * @return RowHandle
+   * @throws \Exception
+   */
+  public function rowHandle($rowName) {
+    if (isset($this->rows[$rowName])) {
+      throw new \Exception("Row '$rowName' does not exist.");
+    }
+    return new RowHandle($this, $rowName);
+  }
+
+  /**
+   * Adds a row and returns the row handle.
+   * This is a hybrid of addRowName() and rowHandle().
+   *
+   * @param $rowName
+   *
+   * @return RowHandle
+   * @throws \Exception
+   */
+  public function addRow($rowName) {
+    if (isset($this->rows[$rowName])) {
+      throw new \Exception("Row '$rowName' already exists.");
+    }
+    $this->rows[$rowName] = TRUE;
+    return new RowHandle($this, $rowName);
   }
 
   /**

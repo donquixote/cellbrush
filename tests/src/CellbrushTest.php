@@ -112,4 +112,60 @@ EOT;
     $this->assertEquals($expected, $table->render());
   }
 
+  function testRowHandle() {
+    $table = (new Table())
+      ->addRowNames(['row0', 'row1', 'row2'])
+      ->addColNames(['col0', 'col1', 'col2'])
+      ->td('row0', 'col0', 'Diag 0')
+      ->td('row1', 'col1', 'Diag 1')
+      ->td('row2', 'col2', 'Diag 2')
+    ;
+    $table->thead()->addRow('head0')
+      ->th('col0', 'Column 0')
+      ->th('col1', 'Column 1')
+      ->th('col2', 'Column 2')
+    ;
+    $expected = <<<EOT
+<table>
+  <thead>
+    <tr><th>Column 0</th><th>Column 1</th><th>Column 2</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Diag 0</td><td></td><td></td></tr>
+    <tr><td></td><td>Diag 1</td><td></td></tr>
+    <tr><td></td><td></td><td>Diag 2</td></tr>
+  </tbody>
+</table>
+
+EOT;
+    $this->assertEquals($expected, $table->render());
+  }
+
+  function testColHandle() {
+    $table = new Table();
+    $table
+      ->addRowNames(['row0', 'row1', 'row2'])
+      ->addColNames(['legend', 'col0', 'col1', 'col2'])
+      ->td('row0', 'col0', 'Diag 0')
+      ->td('row1', 'col1', 'Diag 1')
+      ->td('row2', 'col2', 'Diag 2')
+    ;
+    $table->colHandle('legend')
+      ->th('row0', 'Row 0')
+      ->th('row1', 'Row 1')
+      ->th('row2', 'Row 2')
+    ;
+    $expected = <<<EOT
+<table>
+  <tbody>
+    <tr><th>Row 0</th><td>Diag 0</td><td></td><td></td></tr>
+    <tr><th>Row 1</th><td></td><td>Diag 1</td><td></td></tr>
+    <tr><th>Row 2</th><td></td><td></td><td>Diag 2</td></tr>
+  </tbody>
+</table>
+
+EOT;
+    $this->assertEquals($expected, $table->render());
+  }
+
 } 
