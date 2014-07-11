@@ -124,3 +124,12 @@ RowHandle and \*ColHandle allow you to omit one of $rowName and $colName to addr
       ->th('row1', 'Row 1')
       ->th('row2', 'Row 2')
     ;
+
+
+## Planned features
+
+Next steps:
+
+* Row groups, analogous to col groups. I simply did not have the time for this yet.
+* Combinations of row group and col groups.
+* Nested groups.
