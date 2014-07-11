@@ -101,3 +101,26 @@ In the below example, the column name "products" specifies a colspan cell that s
       ..
       ->addRowName('price')
       ->td('price', 'products.a', '7.66 EUR')
+
+
+## Row handles and column handles
+
+RowHandle and \*ColHandle allow you to omit one of $rowName and $colName to address a table cell.
+
+    $table = (new Table())
+      ->addRowNames(['row0', 'row1', 'row2'])
+      ->addColNames(['legend', 'col0', 'col1', 'col2'])
+      ...
+    ;
+    // Add cells in a "head0" row in the thead section.
+    $table->thead()->addRow('head0')
+      ->th('col0', 'Column 0')
+      ->th('col1', 'Column 1')
+      ->th('col2', 'Column 2')
+    ;
+    // Add cells in a "legend" column.
+    $table->colHandle('legend')
+      ->th('row0', 'Row 0')
+      ->th('row1', 'Row 1')
+      ->th('row2', 'Row 2')
+    ;
