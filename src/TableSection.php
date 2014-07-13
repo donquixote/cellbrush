@@ -136,7 +136,7 @@ class TableSection extends TableRows {
         $colName = array_shift($colNames);
         // Mark to-be-skipped positions in row.
         foreach ($colNames as $colNameToSkip) {
-          $this->cells[$rowName][$colNameToSkip] = TRUE;
+          $this->markCell($rowName, $colNameToSkip);
         }
       }
     }
@@ -155,18 +155,35 @@ class TableSection extends TableRows {
         $colName = array_shift($colNames);
         // Mark to-be-skipped positions in the row and the area below.
         foreach ($colNames as $colNameToSkip) {
-          $this->cells[$rowName][$colNameToSkip] = TRUE;
+          $this->markCell($rowName, $colNameToSkip);
           foreach ($rowNames as $rowNameToSkip) {
-            $this->cells[$rowNameToSkip][$colNameToSkip] = TRUE;
+            $this->markCell($rowNameToSkip, $colNameToSkip);
           }
         }
       }
       // Mark to-be-skipped positions in column.
       foreach ($rowNames as $rowNameToSkip) {
-        $this->cells[$rowNameToSkip][$colName] = TRUE;
+        $this->markCell($rowNameToSkip, $colName);
       }
     }
+
+    if (isset($this->cells[$rowName][$colName])) {
+      throw new \Exception("Cannot overwrite cell at '$rowName'/'$colName'.");
+    }
     $this->cells[$rowName][$colName] = array($content, $tagName, $cellAttributes);
+  }
+
+  /**
+   * @param string $rowName
+   * @param string $colName
+   *
+   * @throws \Exception
+   */
+  private function markCell($rowName, $colName) {
+    if (isset($this->cells[$rowName][$colName])) {
+      throw new \Exception("Cannot overwrite cell at '$rowName'/'$colName'.");
+    }
+    $this->cells[$rowName][$colName] = TRUE;
   }
 
   /**
