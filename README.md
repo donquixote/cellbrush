@@ -144,12 +144,12 @@ RowHandle and \*ColHandle allow you to omit one of $rowName and $colName to addr
 
 <table>
   <thead>
-    <tr><th>H0</th><th>H1</th><th>H2</th></tr>
+    <tr><td></td><th>Column 0</th><th>Column 1</th><th>Column 2</th></tr>
   </thead>
   <tbody>
-    <tr><td>Diag 0</td><td></td><td></td></tr>
-    <tr><td></td><td>Diag 1</td><td></td></tr>
-    <tr><td></td><td></td><td>Diag 2</td></tr>
+    <tr><th>Row 0</th><td>Diag 0</td><td></td><td></td></tr>
+    <tr><th>Row 1</th><td></td><td>Diag 1</td><td></td></tr>
+    <tr><th>Row 2</th><td></td><td></td><td>Diag 2</td></tr>
   </tbody>
 </table>
 
