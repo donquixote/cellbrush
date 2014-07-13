@@ -168,11 +168,15 @@ class Table {
   }
 
   /**
-   * @param string $rowName
-   * @param string $colName
+   * @param string|string[] $rowName
+   *   Row name, group or range.
+   * @param string|string[] $colName
+   *   Column name, group or range.
    * @param string $content
+   *   HTML cell content.
    *
    * @return $this
+   * @throws \Exception
    */
   function td($rowName, $colName, $content) {
     $this->tbody->td($rowName, $colName, $content);
@@ -180,11 +184,15 @@ class Table {
   }
 
   /**
-   * @param string $rowName
-   * @param string $colName
+   * @param string|string[] $rowName
+   *   Row name, group or range.
+   * @param string|string[] $colName
+   *   Column name, group or range.
    * @param string $content
+   *   HTML cell content.
    *
    * @return $this
+   * @throws \Exception
    */
   function th($rowName, $colName, $content) {
     $this->tbody->th($rowName, $colName, $content);

@@ -10,6 +10,16 @@ class TableRows {
   protected $rows = array();
 
   /**
+   * @var string[]
+   */
+  private $rowNames = array();
+
+  /**
+   * @var int
+   */
+  private $iRow = 0;
+
+  /**
    * @var string[][]
    */
   protected $rowGroups = array();
@@ -22,9 +32,10 @@ class TableRows {
    */
   public function addRowName($rowName) {
     if (isset($this->rows[$rowName])) {
-      throw new \Exception("Column '$rowName' already exists.");
+      throw new \Exception("Rowumn '$rowName' already exists.");
     }
-    $this->rows[$rowName] = TRUE;
+    $this->rowNames[] = $rowName;
+    $this->rows[$rowName] = $this->iRow++;
     return $this;
   }
 
@@ -44,6 +55,7 @@ class TableRows {
    * @param string $groupName
    * @param string[] $rowNameSuffixes
    *
+   * @return $this
    * @throws \Exception
    */
   public function addRowGroup($groupName, array $rowNameSuffixes) {
@@ -54,10 +66,10 @@ class TableRows {
     foreach ($rowNameSuffixes as $rowNameSuffix) {
       $rowName = $groupName . '.' . $rowNameSuffix;
       if (isset($this->rows[$rowName])) {
-        throw new \Exception("Column '$rowName' already exists.");
+        throw new \Exception("Rowumn '$rowName' already exists.");
       }
-      $this->rows[$rowName] = $groupName;
-      $rowNames[] = $rowName . '.' . $rowNameSuffix;
+      $this->addRowName($rowName);
+      $rowNames[] = $rowName;
     }
     $this->rowGroups[$groupName] = $rowNames;
     return $this;
@@ -88,20 +100,46 @@ class TableRows {
   }
 
   /**
-   * @param string $rowRange
+   * @param string|string[] $rowRange
    *
    * @return string[]
    *
    * @throws \Exception
    */
-  protected function rowGroupGetRowNames($rowRange) {
+  protected function rowRangeGetRowNames($rowRange) {
     if ('' === $rowRange) {
       return array_keys($this->rows);
+    }
+    if (is_array($rowRange)) {
+      list($firstRowName, $lastRowName) = $rowRange;
+      return $this->rowRangeDoGetRowNames($firstRowName, $lastRowName);
     }
     if (isset($this->rowGroups[$rowRange])) {
       return $this->rowGroups[$rowRange];
     }
-    throw new \Exception("Unknown column group '$rowRange'.");
+    throw new \Exception("Unknown row group '$rowRange'.");
+  }
+
+  /**
+   * @param string $firstRowName
+   * @param string $lastRowName
+   *
+   * @throws \Exception
+   * @return string[]
+   */
+  public function rowRangeDoGetRowNames($firstRowName, $lastRowName) {
+    if (!isset($this->rows[$firstRowName])) {
+      throw new \Exception("Unknown row name '$firstRowName'.");
+    }
+    if (!isset($this->rows[$lastRowName])) {
+      throw new \Exception("Unknown row name '$lastRowName'.");
+    }
+    $iFirst = $this->rows[$firstRowName];
+    $iLast = $this->rows[$lastRowName];
+    if ($iFirst > $iLast) {
+      throw new \Exception("Inverse range detected: $iFirst > $iLast.");
+    }
+    return array_slice($this->rowNames, $iFirst, $iLast - $iFirst + 1);
   }
 
 } 

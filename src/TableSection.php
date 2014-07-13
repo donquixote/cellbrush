@@ -79,25 +79,31 @@ class TableSection extends TableRows {
   }
 
   /**
-   * @param string $rowRange
-   * @param string $colRange
+   * @param string|string[] $rowName
+   *   Row name, group or range.
+   * @param string|string[] $colName
+   *   Column name, group or range.
    * @param string $content
+   *   HTML cell content.
    *
    * @return $this
    * @throws \Exception
    */
-  function td($rowRange, $colRange, $content) {
-    $this->addCell($rowRange, $colRange, 'td', $content);
+  function td($rowName, $colName, $content) {
+    $this->addCell($rowName, $colName, 'td', $content);
     return $this;
   }
 
   /**
-   * @param string $rowName
-   * @param string $colName
+   * @param string|string[] $rowName
+   *   Row name, group or range.
+   * @param string|string[] $colName
+   *   Column name, group or range.
    * @param string $content
+   *   HTML cell content.
    *
-   * @throws \Exception
    * @return $this
+   * @throws \Exception
    */
   function th($rowName, $colName, $content) {
     $this->addCell($rowName, $colName, 'th', $content);
@@ -105,61 +111,62 @@ class TableSection extends TableRows {
   }
 
   /**
-   * @param string $rowRange
-   * @param string $colRange
+   * @param string|string[] $rowName
+   *   Row name, group or range.
+   * @param string|string[] $colName
+   *   Column name, group or range.
    * @param string $tagName
    *   Either 'td' or 'th'.
    * @param string $content
+   *   HTML cell content.
    *
    * @throws \Exception
    */
-  private function addCell($rowRange, $colRange, $tagName, $content) {
+  private function addCell($rowName, $colName, $tagName, $content) {
     $cellAttributes = array();
-    if (isset($this->rows[$rowRange])) {
+    if (!is_array($rowName) && isset($this->rows[$rowName])) {
       // Cell spans only one row.
-      if ($this->columns->columnExists($colRange)) {
+      if (!is_array($colName) && $this->columns->columnExists($colName)) {
         // Cell spans only one column (1 * 1).
-        $this->cells[$rowRange][$colRange] = array($content, $tagName, $cellAttributes);
       }
       else {
         // Cell spans multiple columns (1 * m).
-        $colNames = $this->columns->colGroupGetColNames($colRange);
-        $cellAttributes['colspan'] = count($colNames);
+        $colNames = $this->columns->colGroupGetColNames($colName);
+        $cellAttributes['colspan'] = $colspan = count($colNames);
         $colName = array_shift($colNames);
-        $this->cells[$rowRange][$colName] = array($content, $tagName, $cellAttributes);
-        foreach ($colNames as $colName) {
-          $this->cells[$rowRange][$colName] = TRUE;
+        // Mark to-be-skipped positions in row.
+        foreach ($colNames as $colNameToSkip) {
+          $this->cells[$rowName][$colNameToSkip] = TRUE;
         }
       }
     }
     else {
       // Cell spans multiple rows.
-      $rowNames = $this->rowGroupGetRowNames($rowRange);
-      $cellAttributes['rowspan'] = count($rowNames);
+      $rowNames = $this->rowRangeGetRowNames($rowName);
+      $cellAttributes['rowspan'] = $rowspan = count($rowNames);
       $rowName = array_shift($rowNames);
-      if ($this->columns->columnExists($colRange)) {
+      if (!is_array($colName) && $this->columns->columnExists($colName)) {
         // Cell spans only one column (n * 1).
-        $this->cells[$rowName][$colRange] = array($content, $tagName, $cellAttributes);
-        foreach ($rowNames as $rowName) {
-          $this->cells[$rowName][$colRange] = TRUE;
-        }
       }
       else {
         // Cell spans multiple columns (n * m).
-        $colNames = $this->columns->colGroupGetColNames($colRange);
-        $cellAttributes['colspan'] = count($colNames);
+        $colNames = $this->columns->colGroupGetColNames($colName);
+        $cellAttributes['colspan'] = $colspan = count($colNames);
         $colName = array_shift($colNames);
-        $this->cells[$rowName][$colName] = array($content, $tagName, $cellAttributes);
-        foreach ($colNames as $colName) {
-          $this->cells[$rowName][$colName] = TRUE;
-        }
-        foreach ($rowNames as $rowName) {
-          foreach ($colNames as $colName) {
-            $this->cells[$rowName][$colName] = TRUE;
+        // Mark to-be-skipped positions in the row and the area below.
+        foreach ($colNames as $colNameToSkip) {
+          $this->cells[$rowName][$colNameToSkip] = TRUE;
+          foreach ($rowNames as $rowNameToSkip) {
+            $this->cells[$rowNameToSkip][$colNameToSkip] = TRUE;
           }
         }
       }
+      // Mark to-be-skipped positions in column.
+      foreach ($rowNames as $rowNameToSkip) {
+        $this->cells[$rowNameToSkip][$colName] = TRUE;
+      }
     }
+    $this->cells[$rowName][$colName] = array($content, $tagName, $cellAttributes);
   }
 
   /**

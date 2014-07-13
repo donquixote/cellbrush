@@ -202,4 +202,53 @@ EOT;
     $this->assertEquals($expected, $table->render());
   }
 
+  function testCellRange() {
+    $table = (new Table())
+      ->addRowNames(['row0', 'row1', 'row2'])
+      ->addColNames(['col0', 'col1', 'col2'])
+      ->td('row0', 'col0', 'Cell 0.0')
+      ->td('row1', 'col0', 'Cell 1.0')
+      ->td('row2', 'col0', 'Cell 2.0')
+      ->td('row2', 'col1', 'Cell 2.1')
+      ->td('row2', 'col2', 'Cell 2.2')
+      ->td(['row0', 'row1'], ['col1', 'col2'], 'Range box')
+    ;
+
+    $expected = <<<EOT
+<table>
+  <tbody>
+    <tr><td>Cell 0.0</td><td rowspan="2" colspan="2">Range box</td></tr>
+    <tr><td>Cell 1.0</td></tr>
+    <tr><td>Cell 2.0</td><td>Cell 2.1</td><td>Cell 2.2</td></tr>
+  </tbody>
+</table>
+
+EOT;
+    $this->assertEquals($expected, $table->render());
+  }
+
+  function testCellRangeOverlap() {
+    $table = (new Table())
+      ->addRowNames(['row0', 'row1', 'row2'])
+      ->addColNames(['col0', 'col1', 'col2'])
+      ->th('row1', 'col1', 'Middle')
+      ->td('row0', ['col0', 'col1'], '0.0 - 0.1')
+      ->td('row2', ['col1', 'col2'], '2.1 - 2.2')
+      ->td(['row1', 'row2'], 'col0', '1.0<br/>2.0')
+      ->td(['row0', 'row1'], 'col2', '0.2<br/>1.2')
+    ;
+
+    $expected = <<<EOT
+<table>
+  <tbody>
+    <tr><td colspan="2">0.0 - 0.1</td><td rowspan="2">0.2<br/>1.2</td></tr>
+    <tr><td rowspan="2">1.0<br/>2.0</td><th>Middle</th></tr>
+    <tr><td colspan="2">2.1 - 2.2</td></tr>
+  </tbody>
+</table>
+
+EOT;
+    $this->assertEquals($expected, $table->render());
+  }
+
 } 

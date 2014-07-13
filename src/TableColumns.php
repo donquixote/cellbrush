@@ -5,9 +5,19 @@ namespace Donquixote\Cellbrush;
 class TableColumns {
 
   /**
-   * @var mixed[]
+   * @var int[]
    */
   private $cols = array();
+
+  /**
+   * @var string[]
+   */
+  private $colNames = array();
+
+  /**
+   * @var int
+   */
+  private $iCol = 0;
 
   /**
    * @var string[][]
@@ -22,7 +32,7 @@ class TableColumns {
   }
 
   public function getColNames() {
-    return array_keys($this->cols);
+    return $this->colNames;
   }
 
   /**
@@ -41,7 +51,8 @@ class TableColumns {
     if (isset($this->cols[$colName])) {
       throw new \Exception("Column '$colName' already exists.");
     }
-    $this->cols[$colName] = TRUE;
+    $this->colNames[] = $colName;
+    $this->cols[$colName] = $this->iCol++;
   }
 
   /**
@@ -68,10 +79,7 @@ class TableColumns {
     $colNames = array();
     foreach ($colNameSuffixes as $colNameSuffix) {
       $colName = $groupName . '.' . $colNameSuffix;
-      if (isset($this->cols[$colName])) {
-        throw new \Exception("Column '$colName' already exists.");
-      }
-      $this->cols[$colName] = $groupName;
+      $this->addColName($colName);
       $colNames[] = $colName;
     }
     $this->colGroups[$groupName] = $colNames;
@@ -102,20 +110,46 @@ class TableColumns {
   }
 
   /**
-   * @param string $colName
+   * @param string|string[] $colRange
    *
    * @return string[]
    *
    * @throws \Exception
    */
-  public function colGroupGetColNames($colName) {
-    if ('' === $colName) {
+  public function colGroupGetColNames($colRange) {
+    if ('' === $colRange) {
       return array_keys($this->cols);
     }
-    if (isset($this->colGroups[$colName])) {
-      return $this->colGroups[$colName];
+    if (is_array($colRange)) {
+      list($firstColName, $lastColName) = $colRange;
+      return $this->colRangeDoGetColNames($firstColName, $lastColName);
     }
-    throw new \Exception("Unknown column group '$colName'.");
+    if (isset($this->colGroups[$colRange])) {
+      return $this->colGroups[$colRange];
+    }
+    throw new \Exception("Unknown column group '$colRange'.");
+  }
+
+  /**
+   * @param string $firstColName
+   * @param string $lastColName
+   *
+   * @throws \Exception
+   * @return string[]
+   */
+  public function colRangeDoGetColNames($firstColName, $lastColName) {
+    if (!isset($this->cols[$firstColName])) {
+      throw new \Exception("Unknown col name '$firstColName'.");
+    }
+    if (!isset($this->cols[$lastColName])) {
+      throw new \Exception("Unknown col name '$lastColName'.");
+    }
+    $iFirst = $this->cols[$firstColName];
+    $iLast = $this->cols[$lastColName];
+    if ($iFirst > $iLast) {
+      throw new \Exception("Inverse range detected: $iFirst > $iLast.");
+    }
+    return array_slice($this->colNames, $iFirst, $iLast - $iFirst + 1);
   }
 
 } 
