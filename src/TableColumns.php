@@ -49,7 +49,6 @@ class TableColumns {
     foreach ($colNames as $colName) {
       $this->addColName($colName);
     }
-    return $this;
   }
 
   /**
@@ -72,6 +71,11 @@ class TableColumns {
     $this->colGroups[$groupName] = $colNameSuffixes;
   }
 
+  /**
+   * @param string $colName
+   *
+   * @throws \Exception
+   */
   public function verifyColName($colName) {
     if (1
       && !isset($this->cols[$colName])
