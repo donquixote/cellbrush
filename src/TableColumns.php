@@ -21,6 +21,10 @@ class TableColumns {
     return $this->cols;
   }
 
+  public function getColNames() {
+    return array_keys($this->cols);
+  }
+
   /**
    * @return string[][]
    */
@@ -61,14 +65,16 @@ class TableColumns {
     if (empty($colNameSuffixes)) {
       throw new \Exception("Suffixes cannot be empty.");
     }
+    $colNames = array();
     foreach ($colNameSuffixes as $colNameSuffix) {
       $colName = $groupName . '.' . $colNameSuffix;
       if (isset($this->cols[$colName])) {
         throw new \Exception("Column '$colName' already exists.");
       }
       $this->cols[$colName] = $groupName;
+      $colNames[] = $colName;
     }
-    $this->colGroups[$groupName] = $colNameSuffixes;
+    $this->colGroups[$groupName] = $colNames;
   }
 
   /**
@@ -84,6 +90,32 @@ class TableColumns {
     ) {
       throw new \Exception("Unknown column name '$colName'.");
     }
+  }
+
+  /**
+   * @param string $colName
+   *
+   * @return bool
+   */
+  public function columnExists($colName) {
+    return isset($this->cols[$colName]);
+  }
+
+  /**
+   * @param string $colName
+   *
+   * @return string[]
+   *
+   * @throws \Exception
+   */
+  public function colGroupGetColNames($colName) {
+    if ('' === $colName) {
+      return array_keys($this->cols);
+    }
+    if (isset($this->colGroups[$colName])) {
+      return $this->colGroups[$colName];
+    }
+    throw new \Exception("Unknown column group '$colName'.");
   }
 
 } 

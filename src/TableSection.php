@@ -2,17 +2,12 @@
 
 namespace Donquixote\Cellbrush;
 
-class TableSection {
+class TableSection extends TableRows {
 
   /**
    * @var TableColumns
    */
   private $columns;
-
-  /**
-   * @var true[]
-   */
-  private $rows = array();
 
   /**
    * @var string[][]
@@ -40,32 +35,6 @@ class TableSection {
   public function colHandle($colName) {
     $this->columns->verifyColName($colName);
     return new SectionColHandle($this, $colName);
-  }
-
-  /**
-   * @param string $rowName
-   *
-   * @return $this
-   * @throws \Exception
-   */
-  function addRowName($rowName) {
-    if (isset($this->rows[$rowName])) {
-      throw new \Exception("Row '$rowName' already exists.");
-    }
-    $this->rows[$rowName] = TRUE;
-    return $this;
-  }
-
-  /**
-   * @param string[] $rowNames
-   *
-   * @return $this
-   */
-  public function addRowNames(array $rowNames) {
-    foreach ($rowNames as $rowName) {
-      $this->addRowName($rowName);
-    }
-    return $this;
   }
 
   /**
@@ -110,19 +79,15 @@ class TableSection {
   }
 
   /**
-   * @param string $rowName
-   * @param string $colName
+   * @param string $rowRange
+   * @param string $colRange
    * @param string $content
    *
    * @return $this
    * @throws \Exception
    */
-  function td($rowName, $colName, $content) {
-    if (!isset($this->rows[$rowName]) && '' !== $rowName) {
-      throw new \Exception("Unknown row name '$rowName'.");
-    }
-    $this->columns->verifyColName($colName);
-    $this->cells[$rowName][$colName] = array($content, 'td', array());
+  function td($rowRange, $colRange, $content) {
+    $this->addCell($rowRange, $colRange, 'td', $content);
     return $this;
   }
 
@@ -135,12 +100,66 @@ class TableSection {
    * @return $this
    */
   function th($rowName, $colName, $content) {
-    if (!isset($this->rows[$rowName]) && '' !== $rowName) {
-      throw new \Exception("Unknown row name '$rowName'.");
-    }
-    $this->columns->verifyColName($colName);
-    $this->cells[$rowName][$colName] = array($content, 'th', array());
+    $this->addCell($rowName, $colName, 'th', $content);
     return $this;
+  }
+
+  /**
+   * @param string $rowRange
+   * @param string $colRange
+   * @param string $tagName
+   *   Either 'td' or 'th'.
+   * @param string $content
+   *
+   * @throws \Exception
+   */
+  private function addCell($rowRange, $colRange, $tagName, $content) {
+    $cellAttributes = array();
+    if (isset($this->rows[$rowRange])) {
+      // Cell spans only one row.
+      if ($this->columns->columnExists($colRange)) {
+        // Cell spans only one column (1 * 1).
+        $this->cells[$rowRange][$colRange] = array($content, $tagName, $cellAttributes);
+      }
+      else {
+        // Cell spans multiple columns (1 * m).
+        $colNames = $this->columns->colGroupGetColNames($colRange);
+        $cellAttributes['colspan'] = count($colNames);
+        $colName = array_shift($colNames);
+        $this->cells[$rowRange][$colName] = array($content, $tagName, $cellAttributes);
+        foreach ($colNames as $colName) {
+          $this->cells[$rowRange][$colName] = TRUE;
+        }
+      }
+    }
+    else {
+      // Cell spans multiple rows.
+      $rowNames = $this->rowGroupGetRowNames($rowRange);
+      $cellAttributes['rowspan'] = count($rowNames);
+      $rowName = array_shift($rowNames);
+      if ($this->columns->columnExists($colRange)) {
+        // Cell spans only one column (n * 1).
+        $this->cells[$rowName][$colRange] = array($content, $tagName, $cellAttributes);
+        foreach ($rowNames as $rowName) {
+          $this->cells[$rowName][$colRange] = TRUE;
+        }
+      }
+      else {
+        // Cell spans multiple columns (n * m).
+        $colNames = $this->columns->colGroupGetColNames($colRange);
+        $cellAttributes['colspan'] = count($colNames);
+        $colName = array_shift($colNames);
+        $this->cells[$rowName][$colName] = array($content, $tagName, $cellAttributes);
+        foreach ($colNames as $colName) {
+          $this->cells[$rowName][$colName] = TRUE;
+        }
+        foreach ($rowNames as $rowName) {
+          foreach ($colNames as $colName) {
+            $this->cells[$rowName][$colName] = TRUE;
+          }
+        }
+      }
+    }
   }
 
   /**
@@ -176,72 +195,27 @@ class TableSection {
    * @return array[][]
    */
   private function getMatrix() {
+
+    // Create an empty n*m matrix.
     $matrix = array();
-
-    $cols = $this->columns->getCols();
-    $colNames = array_keys($cols);
-
-    // Fill all 1x1 cells.
+    $emptyRow = array_fill_keys($this->columns->getColNames(), array('', 'td', array()));
     foreach ($this->rows as $rowName => $rTrue) {
-      foreach ($cols as $colName => $cTrue) {
-        $matrix[$rowName][$colName] = isset($this->cells[$rowName][$colName])
-          ? $this->cells[$rowName][$colName]
-          : array('', 'td', array());
-      }
+      $matrix[$rowName] = $emptyRow;
     }
 
-    $colGroups = $this->columns->getColGroups();
-
-    // Fill horizontal cell groups (colspan).
-    foreach ($this->cells as $rowName => $rowCellGroups) {
-      if (!isset($this->rows[$rowName])) {
-        continue;
-      }
-      foreach ($rowCellGroups as $colGroupName => $cell) {
-        if (!isset($colGroups[$colGroupName])) {
-          continue;
+    // Fill in the known cells.
+    foreach ($this->cells as $rowName => $rowCells) {
+      foreach ($rowCells as $colName => $cell) {
+        if (TRUE === $cell) {
+          // This cell needs to be left out due to colspan / rowspan.
+          unset($matrix[$rowName][$colName]);
         }
-        $colNameSuffixes = $colGroups[$colGroupName];
-        $cell[2]['colspan'] = count($colNameSuffixes);
-        $matrix[$rowName][$colGroupName . '.' . $colNameSuffixes[0]] = $cell;
-        for ($i = 1; $i < count($colNameSuffixes); ++$i) {
-          unset($matrix[$rowName][$colGroupName . '.' . $colNameSuffixes[$i]]);
+        else {
+          $matrix[$rowName][$colName] = $cell;
         }
       }
     }
 
-    // Fill full-width cell groups (colspan).
-    foreach ($this->cells as $rowName => $rowCellGroups) {
-      if (!isset($this->rows[$rowName])) {
-        continue;
-      }
-      if (!isset($rowCellGroups[''])) {
-        continue;
-      }
-      $cell = $rowCellGroups[''];
-      $cell[2]['colspan'] = count($cols);
-      $matrix[$rowName][$colNames[0]] = $cell;
-      for ($i = 1; $i < count($cols); ++$i) {
-        unset($matrix[$rowName][$colNames[$i]]);
-      }
-    }
-
-    // Fill full-height cell groups (rowspan).
-    if (isset($this->cells[''])) {
-      $rowNames = array_keys($this->rows);
-      foreach ($this->cells[''] as $colName => $cell) {
-        if (!isset($cols[$colName])) {
-          continue;
-        }
-        $cell[2]['rowspan'] = count($rowNames);
-        $matrix[$rowNames[0]][$colName] = $cell;
-        for ($i = 1; $i < count($rowNames); ++$i) {
-          unset($matrix[$rowNames[$i]][$colName]);
-        }
-      }
-    }
-
-    // Vertical cell groups are not implemented yet.
     return $matrix;
   }
 
