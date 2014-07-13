@@ -142,6 +142,20 @@ RowHandle and \*ColHandle allow you to omit one of $rowName and $colName to addr
       ->th('row2', 'Row 2')
     ;
 
+<table>
+  <thead>
+    <tr><th>H0</th><th>H1</th><th>H2</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Diag 0</td><td></td><td></td></tr>
+    <tr><td></td><td>Diag 1</td><td></td></tr>
+    <tr><td></td><td></td><td>Diag 2</td></tr>
+  </tbody>
+</table>
+
+## More examples?
+
+You can see more examples in [the unit tests](https://github.com/donquixote/cellbrush/tree/master/tests/src).
 
 ## Planned features
 
