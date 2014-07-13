@@ -22,6 +22,13 @@ A simple 3x3 table with the diagonal cells filled.
     ;
     $html = $table->render();
 
+<table>
+  <tbody>
+    <tr><td>Diag 0</td><td></td><td></td></tr>
+    <tr><td></td><td>Diag 1</td><td></td></tr>
+    <tr><td></td><td></td><td>Diag 2</td></tr>
+  </tbody>
+</table>
 
 ## Cells in thead and tfoot
 
@@ -38,6 +45,16 @@ Column names are shared between table sections, but new rows need to be defined 
     ;
     $html = $table->render();
 
+<table>
+  <thead>
+    <tr><th>H0</th><th>H1</th><th>H2</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Diag 0</td><td></td><td></td></tr>
+    <tr><td></td><td>Diag 1</td><td></td></tr>
+    <tr><td></td><td></td><td>Diag 2</td></tr>
+  </tbody>
+</table>
 
 ## Additional tbody sections
 
