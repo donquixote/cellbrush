@@ -177,14 +177,22 @@ EOT;
       ->td('row2', 'col2', 'Diag 2')
     ;
     $table->thead()->addRow('head0')
-      ->th('col0', 'Column 0')
-      ->th('col1', 'Column 1')
-      ->th('col2', 'Column 2')
+      ->thMultiple(
+        [
+          'col0' => 'Column 0',
+          'col1' => 'Column 1',
+          'col2' => 'Column 2',
+        ]
+      )
     ;
     $table->colHandle('legend')
-      ->th('row0', 'Row 0')
-      ->th('row1', 'Row 1')
-      ->th('row2', 'Row 2')
+      ->thMultiple(
+        [
+          'row0' => 'Row 0',
+          'row1' => 'Row 1',
+          'row2' => 'Row 2',
+        ]
+      )
     ;
     $expected = <<<EOT
 <table>

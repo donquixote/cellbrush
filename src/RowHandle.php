@@ -49,4 +49,30 @@ class RowHandle {
     return $this;
   }
 
+  /**
+   * @param string[] $cells
+   *   Format: $[$colName] = $content
+   *
+   * @return $this
+   */
+  function tdMultiple(array $cells) {
+    foreach ($cells as $colName => $content) {
+      $this->tsection->td($this->rowName, $colName, $content);
+    }
+    return $this;
+  }
+
+  /**
+   * @param string[] $cells
+   *   Format: $[$colName] = $content
+   *
+   * @return $this
+   */
+  function thMultiple(array $cells) {
+    foreach ($cells as $colName => $content) {
+      $this->tsection->th($this->rowName, $colName, $content);
+    }
+    return $this;
+  }
+
 } 
