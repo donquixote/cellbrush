@@ -89,6 +89,17 @@ Likewise, set the row name to '' to span the entire height of the table section.
       ->td('', 'col1', 'Vertical cell')
     ;
 
+<table>
+  <thead>
+    <tr><td colspan="3">Horizontal cell in thead.</td></tr>
+  </thead>
+  <tbody>
+    <tr><td>#</td><td rowspan="3">Vertical cell</td><td>#</td></tr>
+    <tr><td>#</td><td>#</td></tr>
+    <tr><td>#</td><td>#</td></tr>
+  </tbody>
+</table>
+
 ## Column groups
 
 Named column groups allow for cells with colspan.
@@ -111,6 +122,7 @@ In the below example, the column name "products" specifies a colspan cell that s
     ;
     $table
       ->addRowName('width')
+      ->th('width', 'legend', 'Width')
       ->td('width', 'products.a', '55 cm')
       ->td('width', 'products.b', '102 cm')
       ..
@@ -118,6 +130,16 @@ In the below example, the column name "products" specifies a colspan cell that s
       ..
       ->addRowName('price')
       ->td('price', 'products.a', '7.66 EUR')
+
+<table>
+  <thead>
+    <tr><th>Legend</th><th colspan="3">Products</th></tr>
+    <tr><th>Product name</th><th>Product A</th><th>Product B</th><th>Product C</th></tr>
+  </thead>
+  <tbody>
+    <tr><th>Width</th><td>55 cm</td><td>102 cm</td><td>7 cm</td></tr>
+  </tbody>
+</table>
 
 
 ## Row handles and column handles
