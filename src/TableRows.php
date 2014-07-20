@@ -32,7 +32,7 @@ class TableRows {
    */
   public function addRowName($rowName) {
     if (isset($this->rows[$rowName])) {
-      throw new \Exception("Rowumn '$rowName' already exists.");
+      throw new \Exception("Row '$rowName' already exists.");
     }
     $this->rowNames[] = $rowName;
     $this->rows[$rowName] = $this->iRow++;

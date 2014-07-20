@@ -31,6 +31,9 @@ class TableColumns {
     return $this->cols;
   }
 
+  /**
+   * @return string[]
+   */
   public function getColNames() {
     return $this->colNames;
   }
