@@ -43,6 +43,36 @@ EOT;
     $this->assertEquals($expected, $html);
   }
 
+  function testNumericKeys() {
+    $table = (new Table())
+      ->addRowNames([0, 1, 2])
+      ->addColNames([0, 1, 2])
+      ->td(0, 0, 'Diag 0')
+      ->td(1, 1, 'Diag 1')
+      ->td(2, 2, 'Diag 2')
+    ;
+    $table->headRow()
+      ->thMultiple(['Column 0', 'Column 1', 'Column 2'])
+    ;
+    $html = $table->render();
+
+    $expected = <<<EOT
+<table>
+  <thead>
+    <tr><th>Column 0</th><th>Column 1</th><th>Column 2</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Diag 0</td><td></td><td></td></tr>
+    <tr><td></td><td>Diag 1</td><td></td></tr>
+    <tr><td></td><td></td><td>Diag 2</td></tr>
+  </tbody>
+</table>
+
+EOT;
+
+    $this->assertEquals($expected, $html);
+  }
+
   function testFullRowspan() {
     $table = (new Table())
       ->addRowNames(['row0', 'row1', 'row2'])
