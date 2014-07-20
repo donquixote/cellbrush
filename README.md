@@ -291,8 +291,6 @@ You can see more examples in [the unit tests](https://github.com/donquixote/cell
 
 Next steps:
 
-* Row groups, analogous to col groups. I simply did not have the time for this yet.
-* Combinations of row group and col groups.
-* Nested groups.
-* More options to set html tag attributes on td/th, tr, tbdody/thead/tfoot, and the table itself.
+* Nested groups, more than one level deep.
+* More options to set html tag attributes and classes on td/th, tr, tbdody/thead/tfoot, and the table itself.
   Ideas and pull requests are welcome!
