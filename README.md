@@ -164,7 +164,6 @@ In the below example, the column name "products" specifies a colspan cell that s
 
 Similar to column groups.
 
-
     $table = (new Table())
       ->addColNames(['legend', 'sublegend', 0, 1])
       ->addRowGroup('dimensions', ['width', 'height'])
@@ -188,6 +187,40 @@ Similar to column groups.
     <tr><th rowspan="2">Dimensions</th><th>Width</th><td>2cm</td><td>5cm</td></tr>
     <tr><th>Height</th><td>14g</td><td>22g</td></tr>
     <tr><th>Price</th><td></td><td>7,- EUR</td><td>5,22 EUR</td></tr>
+  </tbody>
+</table>
+
+## Combination of row groups and column groups
+
+    $table = (new Table())
+      ->addColName('name')
+      ->addColGroup('info', ['color', 'price'])
+      ->addRowGroup('banana', ['description', 'info'])
+      ->th('banana', 'name', 'Banana')
+      ->td('banana.description', 'info', 'A yellow fruit.')
+      ->td('banana.info', 'info.color', 'yellow')
+      ->td('banana.info', 'info.price', '60 cent')
+      ->addRowGroup('coconut', ['description', 'info'])
+      ->th('coconut', 'name', 'Coconut')
+      ->td('coconut.description', 'info', 'Has liquid inside.')
+      ->td('coconut.info', 'info.color', 'brown')
+      ->td('coconut.info', 'info.price', '3 dollar')
+    ;
+    $table->headRow()
+      ->th('name', 'Name')
+      ->th('info.color', 'Color')
+      ->th('info.price', 'Price')
+    ;
+
+<table>
+  <thead>
+    <tr><th>Name</th><th>Color</th><th>Price</th></tr>
+  </thead>
+  <tbody>
+    <tr><th rowspan="2">Banana</th><td colspan="2">A yellow fruit.</td></tr>
+    <tr><td>yellow</td><td>60 cent</td></tr>
+    <tr><th rowspan="2">Coconut</th><td colspan="2">Has liquid inside.</td></tr>
+    <tr><td>brown</td><td>3 dollar</td></tr>
   </tbody>
 </table>
 
