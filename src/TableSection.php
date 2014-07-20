@@ -26,6 +26,14 @@ class TableSection extends TableRows {
   private $rowStripings = array();
 
   /**
+   * Column classes for all table sections.
+   *
+   * @var string[][]
+   *   Format: $[$rowName][] = $class
+   */
+  private $colClasses = array();
+
+  /**
    * @param TableColumns $columns
    */
   function __construct(TableColumns $columns) {
@@ -41,6 +49,34 @@ class TableSection extends TableRows {
   public function colHandle($colName) {
     $this->columns->verifyColName($colName);
     return new SectionColHandle($this, $colName);
+  }
+
+  /**
+   * Adds a column class for this table section.
+   *
+   * @param string $colName
+   * @param string $class
+   *
+   * @return $this
+   */
+  public function addColClass($colName, $class) {
+    $this->colClasses[$colName][] = $class;
+    return $this;
+  }
+
+  /**
+   * Adds column classes for this table section.
+   *
+   * @param string[] $colClasses
+   *   Format: $[$colName] = $class
+   *
+   * @return $this
+   */
+  public function addColClasses(array $colClasses) {
+    foreach ($colClasses as $colName => $class) {
+      $this->colClasses[$colName][] = $class;
+    }
+    return $this;
   }
 
   /**
@@ -265,6 +301,25 @@ class TableSection extends TableRows {
         }
         else {
           $matrix[$rowName][$colName] = $cell;
+        }
+      }
+    }
+
+    // Add column classes.
+    foreach ([$this->columns->getColClasses(), $this->colClasses] as $colClasses) {
+      foreach ($colClasses as $colName => $classes) {
+        if (!isset($emptyRow[$colName])) {
+          continue;
+        }
+        foreach ($classes as $class) {
+          foreach ($matrix as $rowName => &$rowCells) {
+            if (isset($rowCells[$colName][2]['rowspan'])) {
+              // Cells with rowspan don't get a column class, because they don't
+              // belong to a specific column.
+              continue;
+            }
+            $rowCells[$colName][2]['class'][] = $class;
+          }
         }
       }
     }

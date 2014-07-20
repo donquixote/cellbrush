@@ -25,6 +25,14 @@ class TableColumns {
   private $colGroups = array();
 
   /**
+   * Column classes for all table sections.
+   *
+   * @var string[][]
+   *   Format: $[$rowName][] = $class
+   */
+  private $colClasses = array();
+
+  /**
    * @return mixed[]
    */
   public function getCols() {
@@ -86,6 +94,32 @@ class TableColumns {
       $colNames[] = $colName;
     }
     $this->colGroups[$groupName] = $colNames;
+  }
+
+  /**
+   * @param string $colName
+   * @param string $class
+   */
+  public function addColClass($colName, $class) {
+    $this->colClasses[$colName][] = $class;
+  }
+
+  /**
+   * @param string[] $colClasses
+   *   Format: $[$colName] = $class
+   */
+  function addColClasses(array $colClasses) {
+    foreach ($colClasses as $colName => $class) {
+      $this->colClasses[$colName][] = $class;
+    }
+  }
+
+  /**
+   * @return string[][]
+   *   Format: $[$rowName][] = $class
+   */
+  public function getColClasses() {
+    return $this->colClasses;
   }
 
   /**

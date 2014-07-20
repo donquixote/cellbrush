@@ -84,6 +84,28 @@ class Table {
   }
 
   /**
+   * @param string $colName
+   * @param string $class
+   *
+   * @return $this
+   */
+  function addColClass($colName, $class) {
+    $this->columns->addColClass($colName, $class);
+    return $this;
+  }
+
+  /**
+   * @param string[] $colClasses
+   *   Format: $[$colName] = $class
+   *
+   * @return $this
+   */
+  function addColClasses(array $colClasses) {
+    $this->columns->addColClasses($colClasses);
+    return $this;
+  }
+
+  /**
    * @return TableSection
    */
   function thead() {

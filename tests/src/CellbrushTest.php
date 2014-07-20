@@ -357,4 +357,63 @@ EOT;
     $this->assertEquals($expected, $table->render());
   }
 
+  function testColClass() {
+    $table = (new Table())
+      ->addColNames(['col0', 'col1', 'col2'])
+      ->addRowNames(['row0', 'row1', 'row2'])
+      ->td('row0', 'col0', 'Diag 0')
+      ->td('row1', 'col1', 'Diag 1')
+      ->td('row2', 'col2', 'Diag 2')
+      // A column class for all table sections, including thead.
+      ->addColClass('col0', 'colClass0')
+      ->addColClasses(
+        [
+          'col0' => 'extraColClass0',
+          'col1' => 'extraColClass1',
+        ])
+    ;
+    $table->thead()->addRow('head')
+      ->th('col0', 'H0')
+      ->th('col1', 'H1')
+      ->th('col2', 'H2')
+    ;
+    $table->tbody()
+      // A column class that is only for the tbody section, not for thead.
+      ->addColClass('col0', 'tbodyColClass0')
+      ->addColClasses(
+        [
+          'col0' => 'tbodyExtraColClass0',
+          'col1' => 'tbodyExtraColClass1',
+        ])
+    ;
+
+    $expected = <<<EOT
+<table>
+  <thead>
+    <tr><th class="colClass0 extraColClass0">H0</th><th class="extraColClass1">H1</th><th>H2</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="colClass0 extraColClass0 tbodyColClass0 tbodyExtraColClass0">Diag 0</td>
+      <td class="extraColClass1 tbodyExtraColClass1"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="colClass0 extraColClass0 tbodyColClass0 tbodyExtraColClass0"></td>
+      <td class="extraColClass1 tbodyExtraColClass1">Diag 1</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="colClass0 extraColClass0 tbodyColClass0 tbodyExtraColClass0"></td>
+      <td class="extraColClass1 tbodyExtraColClass1"></td>
+      <td>Diag 2</td>
+    </tr>
+  </tbody>
+</table>
+
+EOT;
+
+    $this->assertXmlStringEqualsXmlString($expected, $table->render());
+  }
+
 } 
