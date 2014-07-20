@@ -3,11 +3,28 @@
 
 A library to generate HTML tables with PHP.
 
-Features:
+Table structure:
 
-* Named rows and columns.
+* Named rows and columns, so they can be targeted with string keys.
 * Colspan and rowspan using col groups and row groups.
-* Automatically fills up empty cells.
+* Automatically fills up empty cells, to preserve the structural integrity.
+* Automatically warns on cell collisions.
+
+Tag attributes:
+
+* Easily add row classes.
+* Easily add row striping classes (odd/even and more).
+* Easily add column classes that apply to all cells in the column.
+* (more planned)
+
+API design:
+
+* Method chaining instead of huge arrays of doom.
+* Shortcut notations for frequently used stuff.
+* Return value and parameter types nicely documented, so your IDE can let you know about possible operations.
+* Exceptions thrown for integrity violation.
+* Composer and PSR-4.
+
 
 ## Basic usage
 
