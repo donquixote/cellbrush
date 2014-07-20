@@ -85,7 +85,7 @@ EOT;
     $this->assertEquals($expected, $table->render());
   }
 
-  function testColGroups() {
+  function testColGroup() {
     $table = (new Table())
       ->addRowNames(['row0', 'row1', 'row2'])
       ->addColNames(['col0', 'col1', 'col2'])
