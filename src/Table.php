@@ -135,6 +135,17 @@ class Table {
   }
 
   /**
+   * A standardized way to access the main or only row of thead.
+   *
+   * @param string $rowName
+   *
+   * @return RowHandle
+   */
+  function headRow($rowName = 'head') {
+    return $this->thead->addRowIfNotExists($rowName);
+  }
+
+  /**
    * @param string $rowName
    *
    * @return $this

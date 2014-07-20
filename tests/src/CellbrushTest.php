@@ -120,7 +120,7 @@ EOT;
       ->td('row1', 'col1', 'Diag 1')
       ->td('row2', 'col2', 'Diag 2')
     ;
-    $table->thead()->addRow('head0')
+    $table->headRow()
       ->th('col0', 'Column 0')
       ->th('col1', 'Column 1')
       ->th('col2', 'Column 2')
@@ -176,7 +176,7 @@ EOT;
       ->td('row1', 'col1', 'Diag 1')
       ->td('row2', 'col2', 'Diag 2')
     ;
-    $table->thead()->addRow('head0')
+    $table->headRow()
       ->thMultiple(
         [
           'col0' => 'Column 0',
@@ -372,7 +372,7 @@ EOT;
           'col1' => 'extraColClass1',
         ])
     ;
-    $table->thead()->addRow('head')
+    $table->headRow()
       ->th('col0', 'H0')
       ->th('col1', 'H1')
       ->th('col2', 'H2')
