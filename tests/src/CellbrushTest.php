@@ -259,4 +259,37 @@ EOT;
     $this->assertEquals($expected, $table->render());
   }
 
+  function testRowClass() {
+    $table = (new Table())
+      ->addRowNames(['row0', 'row1', 'row2'])
+      ->addColNames(['col0', 'col1', 'col2'])
+      ->td('row0', 'col0', 'Diag 0')
+      ->td('row1', 'col1', 'Diag 1')
+      ->td('row2', 'col2', 'Diag 2')
+      ->addRowClasses(
+        [
+          'row0' => 'rowClass0',
+          'row1' => 'rowClass1',
+          'row2' => 'rowClass2',
+        ])
+      ->addRowClass('row2', 'extraClass')
+    ;
+    $table->tbody()
+      ->addRowClass('row1', 'otherClass')
+    ;
+
+    $expected = <<<EOT
+<table>
+  <tbody>
+    <tr class="rowClass0"><td>Diag 0</td><td></td><td></td></tr>
+    <tr class="rowClass1 otherClass"><td></td><td>Diag 1</td><td></td></tr>
+    <tr class="rowClass2 extraClass"><td></td><td></td><td>Diag 2</td></tr>
+  </tbody>
+</table>
+
+EOT;
+
+    $this->assertEquals($expected, $table->render());
+  }
+
 } 

@@ -168,6 +168,17 @@ class Table {
   }
 
   /**
+   * @param string[] $rowClasses
+   *   Format: $[$rowName] = $class
+   *
+   * @return $this
+   */
+  public function addRowClasses(array $rowClasses) {
+    $this->tbody->addRowClasses($rowClasses);
+    return $this;
+  }
+
+  /**
    * @param string|string[] $rowName
    *   Row name, group or range.
    * @param string|string[] $colName

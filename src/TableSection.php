@@ -12,7 +12,7 @@ class TableSection extends TableRows {
   /**
    * @var string[][]
    */
-  private $rowAttributes;
+  private $rowAttributes = array();
 
   /**
    * @var array[][]
@@ -75,6 +75,19 @@ class TableSection extends TableRows {
    */
   public function addRowClass($rowName, $class) {
     $this->rowAttributes[$rowName]['class'][] = $class;
+    return $this;
+  }
+
+  /**
+   * @param string[] $rowClasses
+   *   Format: $[$rowName] = $class
+   *
+   * @return $this
+   */
+  public function addRowClasses($rowClasses) {
+    foreach ($rowClasses as $rowName => $class) {
+      $this->rowAttributes[$rowName]['class'][] = $class;
+    }
     return $this;
   }
 
