@@ -179,6 +179,17 @@ class Table {
   }
 
   /**
+   * @param string[] $striping
+   *   Classes for striping. E.g. ['odd', 'even'], or '['1st', '2nd', '3rd'].
+   *
+   * @return $this
+   */
+  public function addRowStriping($striping = ['odd', 'even']) {
+    $this->tbody->addRowStriping($striping);
+    return $this;
+  }
+
+  /**
    * @param string|string[] $rowName
    *   Row name, group or range.
    * @param string|string[] $colName

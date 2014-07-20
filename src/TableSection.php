@@ -20,6 +20,12 @@ class TableSection extends TableRows {
   private $cells = array();
 
   /**
+   * @var string[][]
+   *   Format: $[] = ['odd', 'even']
+   */
+  private $rowStripings = array();
+
+  /**
    * @param TableColumns $columns
    */
   function __construct(TableColumns $columns) {
@@ -88,6 +94,17 @@ class TableSection extends TableRows {
     foreach ($rowClasses as $rowName => $class) {
       $this->rowAttributes[$rowName]['class'][] = $class;
     }
+    return $this;
+  }
+
+  /**
+   * @param string[] $striping
+   *   Classes for striping. E.g. ['odd', 'even'], or '['1st', '2nd', '3rd'].
+   *
+   * @return $this
+   */
+  public function addRowStriping($striping = ['odd', 'even']) {
+    $this->rowStripings[] = $striping;
     return $this;
   }
 
@@ -208,7 +225,9 @@ class TableSection extends TableRows {
    */
   function render($sectionTagName) {
     $html = '';
-    foreach ($this->getMatrix() as $rowName => $rowCells) {
+    $matrix = $this->getMatrix();
+    $rowAttributesAll = $this->getRowAttributesAll(array_keys($matrix));
+    foreach ($matrix as $rowName => $rowCells) {
       $rowHtml = '';
       foreach ($rowCells as $colName => $cell) {
         list($cellHtml, $tagName, $attributes) = $cell;
@@ -217,10 +236,7 @@ class TableSection extends TableRows {
           : '';
         $rowHtml .= '<' . $tagName . $attributes . '>' . $cellHtml . '</' . $tagName . '>';
       }
-      $rowAttributes = isset($this->rowAttributes[$rowName])
-        ? Util::htmlAttributes($this->rowAttributes[$rowName])
-        : '';
-      $html .= '    <tr' . $rowAttributes . '>' . $rowHtml . '</tr>' . "\n";
+      $html .= '    <tr' . $rowAttributesAll[$rowName] . '>' . $rowHtml . '</tr>' . "\n";
     }
     if ('' === $html) {
       return '';
@@ -254,6 +270,35 @@ class TableSection extends TableRows {
     }
 
     return $matrix;
+  }
+
+  /**
+   * @param string[] $rowNames
+   *   Format: ['row0', 'row1', 'row2'].
+   *
+   * @return string[]
+   *   Format: $['row0'] = ' class="some_class"'.
+   */
+  private function getRowAttributesAll(array $rowNames) {
+    $attributesAll = array_fill_keys($rowNames, array());
+    foreach ($this->rowAttributes as $rowName => $attributes) {
+      $attributesAll[$rowName] = $attributes;
+    }
+    foreach ($this->rowStripings as $striping) {
+      $n = count($striping);
+      foreach ($rowNames as $i => $rowName) {
+        if (isset($striping[$i % $n])) {
+          $attributesAll[$rowName]['class'][] = $striping[$i % $n];
+        }
+      }
+    }
+    $attributesAllString = array();
+    foreach ($attributesAll as $rowName => $rowAttributes) {
+      $attributesAllString[$rowName] = empty($rowAttributes)
+        ? ''
+        : Util::htmlAttributes($rowAttributes);
+    }
+    return $attributesAllString;
   }
 
 } 

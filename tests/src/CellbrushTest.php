@@ -292,4 +292,69 @@ EOT;
     $this->assertEquals($expected, $table->render());
   }
 
+  function testRowStripingOddEven() {
+    $table = (new Table())
+      ->addRowNames(['row0', 'row1', 'row2', 'row3', 'row4', 'row5'])
+      ->addColNames(['col0', 'col1', 'col2'])
+      ->td('row0', 'col0', 'Diag 0')
+      ->td('row1', 'col1', 'Diag 1')
+      ->td('row2', 'col2', 'Diag 2')
+      ->td('row3', 'col0', 'Diag 0')
+      ->td('row4', 'col1', 'Diag 1')
+      ->td('row5', 'col2', 'Diag 2')
+      // Basic odd/even striping
+      ->addRowStriping()
+    ;
+
+    $expected = <<<EOT
+<table>
+  <tbody>
+    <tr class="odd"><td>Diag 0</td><td></td><td></td></tr>
+    <tr class="even"><td></td><td>Diag 1</td><td></td></tr>
+    <tr class="odd"><td></td><td></td><td>Diag 2</td></tr>
+    <tr class="even"><td>Diag 0</td><td></td><td></td></tr>
+    <tr class="odd"><td></td><td>Diag 1</td><td></td></tr>
+    <tr class="even"><td></td><td></td><td>Diag 2</td></tr>
+  </tbody>
+</table>
+
+EOT;
+
+    $this->assertEquals($expected, $table->render());
+  }
+
+  function testRowStripingAdvanced() {
+    $table = (new Table())
+      ->addRowNames(['row0', 'row1', 'row2', 'row3', 'row4', 'row5'])
+      ->addColNames(['col0', 'col1', 'col2'])
+      ->td('row0', 'col0', 'Diag 0')
+      ->td('row1', 'col1', 'Diag 1')
+      ->td('row2', 'col2', 'Diag 2')
+      ->td('row3', 'col0', 'Diag 0')
+      ->td('row4', 'col1', 'Diag 1')
+      ->td('row5', 'col2', 'Diag 2')
+      ->addRowClass('row1', 'extraClass')
+      // Basic odd/even striping
+      ->addRowStriping()
+      // 3-way striping.
+      ->addRowStriping(['1of3', NULL, '3of3'])
+    ;
+
+    $expected = <<<EOT
+<table>
+  <tbody>
+    <tr class="odd 1of3"><td>Diag 0</td><td></td><td></td></tr>
+    <tr class="extraClass even"><td></td><td>Diag 1</td><td></td></tr>
+    <tr class="odd 3of3"><td></td><td></td><td>Diag 2</td></tr>
+    <tr class="even 1of3"><td>Diag 0</td><td></td><td></td></tr>
+    <tr class="odd"><td></td><td>Diag 1</td><td></td></tr>
+    <tr class="even 3of3"><td></td><td></td><td>Diag 2</td></tr>
+  </tbody>
+</table>
+
+EOT;
+
+    $this->assertEquals($expected, $table->render());
+  }
+
 } 
