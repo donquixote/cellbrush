@@ -86,7 +86,7 @@ class TableSection extends TableRows {
    * @throws \Exception
    */
   public function rowHandle($rowName) {
-    if (isset($this->rows[$rowName])) {
+    if (!$this->rowExists($rowName)) {
       throw new \Exception("Row '$rowName' does not exist.");
     }
     return new RowHandle($this, $rowName);
@@ -102,10 +102,17 @@ class TableSection extends TableRows {
    * @throws \Exception
    */
   public function addRow($rowName) {
-    if (isset($this->rows[$rowName])) {
-      throw new \Exception("Row '$rowName' already exists.");
-    }
-    $this->rows[$rowName] = TRUE;
+    $this->addRowName($rowName);
+    return new RowHandle($this, $rowName);
+  }
+
+  /**
+   * @param string $rowName
+   *
+   * @return RowHandle
+   */
+  public function addRowIfNotExists($rowName) {
+    $this->addRowNameIfNotExists($rowName);
     return new RowHandle($this, $rowName);
   }
 
@@ -190,7 +197,7 @@ class TableSection extends TableRows {
    */
   private function addCell($rowName, $colName, $tagName, $content) {
     $cellAttributes = array();
-    if (!is_array($rowName) && isset($this->rows[$rowName])) {
+    if (!is_array($rowName) && $this->rowExists($rowName)) {
       // Cell spans only one row.
       if (!is_array($colName) && $this->columns->columnExists($colName)) {
         // Cell spans only one column (1 * 1).
@@ -288,7 +295,7 @@ class TableSection extends TableRows {
     // Create an empty n*m matrix.
     $matrix = array();
     $emptyRow = array_fill_keys($this->columns->getColNames(), array('', 'td', array()));
-    foreach ($this->rows as $rowName => $rTrue) {
+    foreach ($this->getRowNames() as $rowName) {
       $matrix[$rowName] = $emptyRow;
     }
 

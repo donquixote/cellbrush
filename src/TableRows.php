@@ -7,7 +7,7 @@ class TableRows {
   /**
    * @var mixed[]
    */
-  protected $rows = array();
+  private $rows = array();
 
   /**
    * @var string[]
@@ -22,7 +22,28 @@ class TableRows {
   /**
    * @var string[][]
    */
-  protected $rowGroups = array();
+  private $rowGroups = array();
+
+  /**
+   * @return mixed[]
+   */
+  public function getRows() {
+    return $this->rows;
+  }
+
+  /**
+   * @return string[]
+   */
+  public function getRowNames() {
+    return $this->rowNames;
+  }
+
+  /**
+   * @return string[][]
+   */
+  public function getRowGroups() {
+    return $this->rowGroups;
+  }
 
   /**
    * @param string $rowName
@@ -37,6 +58,20 @@ class TableRows {
     $this->rowNames[] = $rowName;
     $this->rows[$rowName] = $this->iRow++;
     return $this;
+  }
+
+  /**
+   * @param string $rowName
+   *
+   * @return $this
+   */
+  public function addRowNameIfNotExists($rowName) {
+    if (!isset($this->rows[$rowName])) {
+      $this->rowNames[] = $rowName;
+      $this->rows[$rowName] = $this->iRow++;
+    }
+    return $this;
+
   }
 
   /**
