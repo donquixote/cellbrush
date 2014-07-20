@@ -167,6 +167,18 @@ class Table {
   }
 
   /**
+   * @param string $groupName
+   * @param string[] $rowNameSuffixes
+   *
+   * @return $this
+   * @throws \Exception
+   */
+  function addRowGroup($groupName, $rowNameSuffixes) {
+    $this->tbody->addRowGroup($groupName, $rowNameSuffixes);
+    return $this;
+  }
+
+  /**
    * @param string $rowName
    *
    * @return RowHandle
