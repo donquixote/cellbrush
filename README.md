@@ -142,7 +142,7 @@ In the below example, the column name "products" specifies a colspan cell that s
 </table>
 
 
-## Row handles and column handles
+## Shortcut syntax with row handles and column handles
 
 RowHandle and \*ColHandle allow you to omit one of $rowName and $colName to address a table cell.
 
@@ -152,7 +152,7 @@ RowHandle and \*ColHandle allow you to omit one of $rowName and $colName to addr
       ...
     ;
     // Add cells in a "head0" row in the thead section.
-    $table->thead()->addRow('head0')
+    $table->headRow()
       ->th('col0', 'Column 0')
       ->th('col1', 'Column 1')
       ->th('col2', 'Column 2')
@@ -175,6 +175,31 @@ RowHandle and \*ColHandle allow you to omit one of $rowName and $colName to addr
   </tbody>
 </table>
 
+
+## Row classes
+
+Row classes can be added quite easily with `addRowClass()`.
+
+    $table->addRowClass('row0', 'rowClass0');
+
+## Row striping
+
+Row striping classes can be added to a table section with `addRowStriping()`.
+
+The default striping is `['odd', 'even']`, but different patterns can be added with three or more stripes.
+
+    $table->addRowStriping(['1of3', '2of3', '3of3']);
+
+
+## Column classes
+
+You can use `addColClass()` to add a class to all cells of a column.
+This can be done either for all table sections at once, or for specific table sections.
+
+    $table->addColClass('col0', 'allSectionsColumn0');
+    $table->tbody()->addColClass('col0', 'tbodyColumn0');
+
+
 ## More examples?
 
 You can see more examples in [the unit tests](https://github.com/donquixote/cellbrush/tree/master/tests/src).
@@ -187,3 +212,4 @@ Next steps:
 * Combinations of row group and col groups.
 * Nested groups.
 * More options to set html tag attributes on td/th, tr, tbdody/thead/tfoot, and the table itself.
+  Ideas and pull requests are welcome!
