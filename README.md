@@ -160,6 +160,38 @@ In the below example, the column name "products" specifies a colspan cell that s
 </table>
 
 
+## Row groups
+
+Similar to column groups.
+
+
+    $table = (new Table())
+      ->addColNames(['legend', 'sublegend', 0, 1])
+      ->addRowGroup('dimensions', ['width', 'height'])
+      ->addRowName('price')
+      ->th('dimensions', 'legend', 'Dimensions')
+      ->th('dimensions.width', 'sublegend', 'Width')
+      ->th('dimensions.height', 'sublegend', 'Height')
+      ->th('price', 'legend', 'Price')
+    ;
+    $table->headRow()->thMultiple(['Product 0', 'Product 1']);
+    $table->rowHandle('dimensions.width')->tdMultiple(['2cm', '5cm']);
+    $table->rowHandle('dimensions.height')->tdMultiple(['14g', '22g']);
+    $table->rowHandle('price')->tdMultiple(['7,- EUR', '5,22 EUR']);
+
+
+<table>
+  <thead>
+    <tr><td></td><td></td><th>Product 0</th><th>Product 1</th></tr>
+  </thead>
+  <tbody>
+    <tr><th rowspan="2">Dimensions</th><th>Width</th><td>2cm</td><td>5cm</td></tr>
+    <tr><th>Height</th><td>14g</td><td>22g</td></tr>
+    <tr><th>Price</th><td></td><td>7,- EUR</td><td>5,22 EUR</td></tr>
+  </tbody>
+</table>
+
+
 ## Shortcut syntax with row handles and column handles
 
 RowHandle and \*ColHandle allow you to omit one of $rowName and $colName to address a table cell.
