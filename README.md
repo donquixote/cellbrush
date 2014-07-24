@@ -14,7 +14,7 @@ Table structure:
 Tag attributes:
 
 * Easily add row classes.
-* Easily add row striping classes (odd/even and more).
+* Easily add row striping classes (odd/even zebra striping and more).
 * Easily add column classes that apply to all cells in the column.
 * (more planned)
 
@@ -271,7 +271,12 @@ Row striping classes can be added to a table section with `addRowStriping()`.
 
 The default striping is `['odd', 'even']`, but different patterns can be added with three or more stripes.
 
+    // Odd/even zebra striping.
+    $table->addRowStriping();
+    // 3-way striping.
     $table->addRowStriping(['1of3', '2of3', '3of3']);
+
+The striping always applies to a table section. By default, this wil be the main tbody section.
 
 
 ## Column classes
@@ -292,5 +297,6 @@ You can see more examples in [the unit tests](https://github.com/donquixote/cell
 Next steps:
 
 * Nested groups, more than one level deep.
+* Brick-style ("overlapping") rowspan and colspan, e.g. to represent time intervals.
 * More options to set html tag attributes and classes on td/th, tr, tbdody/thead/tfoot, and the table itself.
   Ideas and pull requests are welcome!
