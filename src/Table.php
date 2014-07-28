@@ -20,6 +20,9 @@ class Table {
   private $tbody;
 
   /**
+   * Additional tbody sections.
+   * (The main tbody is in the protected $tbody variable of TBodyWrapper)
+   *
    * @var TableSection[]
    */
   private $tbodies = array();
