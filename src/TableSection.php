@@ -184,6 +184,42 @@ class TableSection extends TableRows implements TableSectionInterface {
   }
 
   /**
+   * Adds a td cell with a colspan that ends where the next known cell begins.
+   *
+   * @param string|string[] $rowName
+   *   Row name, group or range.
+   * @param string|string[] $colName
+   *   Column name, group or range.
+   * @param string $content
+   *   HTML cell content.
+   *
+   * @return $this
+   * @throws \Exception
+   */
+  function tdOpenEnd($rowName, $colName, $content) {
+    $this->addOpenEndCell($rowName, $colName, 'td', $content);
+    return $this;
+  }
+
+  /**
+   * Adds a th cell with a colspan that ends where the next known cell begins.
+   *
+   * @param string|string[] $rowName
+   *   Row name, group or range.
+   * @param string|string[] $colName
+   *   Column name, group or range.
+   * @param string $content
+   *   HTML cell content.
+   *
+   * @return $this
+   * @throws \Exception
+   */
+  function thOpenEnd($rowName, $colName, $content) {
+    $this->addOpenEndCell($rowName, $colName, 'th', $content);
+    return $this;
+  }
+
+  /**
    * @param string|string[] $rowName
    *   Row name, group or range.
    * @param string|string[] $colName
@@ -244,6 +280,23 @@ class TableSection extends TableRows implements TableSectionInterface {
       throw new \Exception("Cannot overwrite cell at '$rowName'/'$colName'.");
     }
     $this->cells[$rowName][$colName] = array($content, $tagName, $cellAttributes);
+  }
+
+  /**
+   * @param string|string[] $rowName
+   *   Row name, group or range.
+   * @param string|string[] $colName
+   *   Column name, group or range.
+   * @param string $tagName
+   *   Either 'td' or 'th'.
+   * @param string $content
+   *   HTML cell content.
+   *
+   * @throws \Exception
+   */
+  private function addOpenEndCell($rowName, $colName, $tagName, $content) {
+    // @todo Start with a regular cell.
+    // @todo Mark the open-end stuff.
   }
 
   /**

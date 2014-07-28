@@ -75,4 +75,19 @@ class RowHandle {
     return $this;
   }
 
+  /**
+   * Adds a th cell with a colspan that ends where the next known cell begins.
+   *
+   * @param string|string[] $colName
+   *   Column name, group or range.
+   * @param string $content
+   *   HTML cell content.
+   *
+   * @return $this
+   */
+  function thOpenEnd($colName, $content) {
+    $this->tsection->thOpenEnd($this->rowName, $colName, $content);
+    return $this;
+  }
+
 } 
