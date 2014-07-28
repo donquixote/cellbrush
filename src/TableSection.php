@@ -2,7 +2,7 @@
 
 namespace Donquixote\Cellbrush;
 
-class TableSection extends TableRows {
+class TableSection extends TableRows implements TableSectionInterface {
 
   /**
    * @var TableColumns
