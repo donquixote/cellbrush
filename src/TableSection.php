@@ -133,7 +133,7 @@ class TableSection extends TableRows {
    *
    * @return $this
    */
-  public function addRowClasses($rowClasses) {
+  public function addRowClasses(array $rowClasses) {
     foreach ($rowClasses as $rowName => $class) {
       $this->rowAttributes[$rowName]['class'][] = $class;
     }
@@ -146,7 +146,7 @@ class TableSection extends TableRows {
    *
    * @return $this
    */
-  public function addRowStriping($striping = ['odd', 'even']) {
+  public function addRowStriping(array $striping = ['odd', 'even']) {
     $this->rowStripings[] = $striping;
     return $this;
   }
