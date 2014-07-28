@@ -16,6 +16,7 @@ class TableSection extends TableRows {
 
   /**
    * @var array[][]
+   *   Format: $[$rowName][$colName] = [$cellContent, 'td'|'th', $cellAttributes]
    */
   private $cells = array();
 
@@ -96,7 +97,7 @@ class TableSection extends TableRows {
    * Adds a row and returns the row handle.
    * This is a hybrid of addRowName() and rowHandle().
    *
-   * @param $rowName
+   * @param string $rowName
    *
    * @return RowHandle
    * @throws \Exception
