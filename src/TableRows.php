@@ -140,6 +140,24 @@ class TableRows {
   }
 
   /**
+   * @param string $rowName
+   *   Row name to start with.
+   * @param int $rowspan
+   *
+   * @return string[]
+   *   Format: $[$rowIndex] = $rowName
+   *   Row names covered by the rowspan cell.
+   */
+  protected function rowspanGetRowNames($rowName, $rowspan) {
+    $rowIndex = $this->rows[$rowName];
+    $rowNames = array();
+    for ($i = 0; $i < $rowspan; ++$i) {
+      $rowNames[$i + $rowIndex] = $this->rowNames[$i + $rowIndex];
+    }
+    return $rowNames;
+  }
+
+  /**
    * @param string|string[] $rowRange
    *   Format: $rowName (string), or [$firstRowName, $lastRowName].
    *
