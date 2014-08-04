@@ -43,6 +43,13 @@ class Table {
   }
 
   /**
+   * @return self
+   */
+  static function create() {
+    return new self();
+  }
+
+  /**
    * @param string $colName
    *
    * @return $this
