@@ -5,12 +5,14 @@ namespace Donquixote\Cellbrush;
 class TableRows {
 
   /**
-   * @var mixed[]
+   * @var int[]
+   *   Format: $[$rowName] = $rowIndex
    */
   private $rows = array();
 
   /**
    * @var string[]
+   *   Format: $[$rowIndex] = $rowName
    */
   private $rowNames = array();
 
@@ -76,6 +78,7 @@ class TableRows {
 
   /**
    * @param string[] $rowNames
+   *   Format: [$rowName0, $rowName1, ..]
    *
    * @return $this
    */
@@ -89,6 +92,7 @@ class TableRows {
   /**
    * @param string $groupName
    * @param string[] $rowNameSuffixes
+   *   Format: [$suffix0, $suffix1, ..]
    *
    * @return $this
    * @throws \Exception
@@ -129,6 +133,7 @@ class TableRows {
    * @param string $rowName
    *
    * @return bool
+   *   true, if the row has been defined.
    */
   protected function rowExists($rowName) {
     return isset($this->rows[$rowName]);
@@ -136,8 +141,10 @@ class TableRows {
 
   /**
    * @param string|string[] $rowRange
+   *   Format: $rowName (string), or [$firstRowName, $lastRowName].
    *
    * @return string[]
+   *   Format: [$rowName0, $rowName1, $rowName2, ..]
    *
    * @throws \Exception
    */
@@ -161,6 +168,7 @@ class TableRows {
    *
    * @throws \Exception
    * @return string[]
+   *   Format: [$rowName0, $rowName1, $rowName2, ..]
    */
   public function rowRangeDoGetRowNames($firstRowName, $lastRowName) {
     if (!isset($this->rows[$firstRowName])) {
