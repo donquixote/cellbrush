@@ -21,6 +21,14 @@ class TableSection extends TableRows implements TableSectionInterface {
   private $cells = array();
 
   /**
+   * A marker for cells that should be open-ended.
+   *
+   * @var true[][]
+   *   Format: $[$rowName][$colName] = true
+   */
+  private $openEndCells = array();
+
+  /**
    * @var string[][]
    *   Format: $[] = ['odd', 'even']
    */
@@ -185,6 +193,42 @@ class TableSection extends TableRows implements TableSectionInterface {
   }
 
   /**
+   * Adds a td cell with a colspan that ends where the next known cell begins.
+   *
+   * @param string|string[] $rowName
+   *   Row name, group or range.
+   * @param string|string[] $colName
+   *   Column name, group or range.
+   * @param string $content
+   *   HTML cell content.
+   *
+   * @return $this
+   * @throws \Exception
+   */
+  function tdOpenEnd($rowName, $colName, $content) {
+    $this->addOpenEndCell($rowName, $colName, 'td', $content);
+    return $this;
+  }
+
+  /**
+   * Adds a th cell with a colspan that ends where the next known cell begins.
+   *
+   * @param string|string[] $rowName
+   *   Row name, group or range.
+   * @param string|string[] $colName
+   *   Column name, group or range.
+   * @param string $content
+   *   HTML cell content.
+   *
+   * @return $this
+   * @throws \Exception
+   */
+  function thOpenEnd($rowName, $colName, $content) {
+    $this->addOpenEndCell($rowName, $colName, 'th', $content);
+    return $this;
+  }
+
+  /**
    * @param string|string[] $rowName
    *   Row name, group or range.
    * @param string|string[] $colName
@@ -248,6 +292,23 @@ class TableSection extends TableRows implements TableSectionInterface {
   }
 
   /**
+   * @param string|string[] $rowName
+   *   Row name, group or range.
+   * @param string|string[] $colName
+   *   Column name, group or range.
+   * @param string $tagName
+   *   Either 'td' or 'th'.
+   * @param string $content
+   *   HTML cell content.
+   *
+   * @throws \Exception
+   */
+  private function addOpenEndCell($rowName, $colName, $tagName, $content) {
+    $this->addCell($rowName, $colName, $tagName, $content);
+    $this->openEndCells[$rowName][$colName] = TRUE;
+  }
+
+  /**
    * @param string $rowName
    * @param string $colName
    *
@@ -300,39 +361,100 @@ class TableSection extends TableRows implements TableSectionInterface {
       $matrix[$rowName] = $emptyRow;
     }
 
-    // Fill in the known cells.
-    foreach ($this->cells as $rowName => $rowCells) {
-      foreach ($rowCells as $colName => $cell) {
+    // Fill in the known cells, and remove cells that are left out for rowspan
+    // or colspan of other cells.
+    foreach ($this->expandCells() as $rowName => $rowCells) {
+      foreach ($rowCells as $openEndCellColName => $cell) {
         if (TRUE === $cell) {
           // This cell needs to be left out due to colspan / rowspan.
-          unset($matrix[$rowName][$colName]);
+          unset($matrix[$rowName][$openEndCellColName]);
         }
         else {
-          $matrix[$rowName][$colName] = $cell;
+          $matrix[$rowName][$openEndCellColName] = $cell;
         }
       }
     }
 
     // Add column classes.
     foreach ([$this->columns->getColClasses(), $this->colClasses] as $colClasses) {
-      foreach ($colClasses as $colName => $classes) {
-        if (!isset($emptyRow[$colName])) {
+      foreach ($colClasses as $openEndCellColName => $classes) {
+        if (!isset($emptyRow[$openEndCellColName])) {
           continue;
         }
         foreach ($classes as $class) {
-          foreach ($matrix as $rowName => &$rowCells) {
-            if (isset($rowCells[$colName][2]['rowspan'])) {
+          foreach ($matrix as &$rowCells) {
+            if (isset($rowCells[$openEndCellColName][2]['rowspan'])) {
               // Cells with rowspan don't get a column class, because they don't
               // belong to a specific column.
               continue;
             }
-            $rowCells[$colName][2]['class'][] = $class;
+            $rowCells[$openEndCellColName][2]['class'][] = $class;
           }
         }
       }
     }
 
     return $matrix;
+  }
+
+  /**
+   * Returns the cells with expanded open-end cells.
+   *
+   * @return array[][]
+   *   Format: $[$rowName][$colName] = [$cellContent, 'td'|'th', $cellAttributes]|true
+   *   Cell positions are marked as TRUE, if the position needs to be left out
+   *   for the colspan or rowspan of other cells.
+   */
+  private function expandCells() {
+
+    $colIndices = $this->columns->getCols();
+    $colNames = $this->columns->getColNames();
+    $cells = $this->cells;
+
+    foreach ($this->openEndCells as $rowName => $openEndColNames) {
+      $rowCells =& $cells[$rowName];
+      foreach ($openEndColNames as $colNameBegin => $cTrue) {
+        $iColBegin = $colIndices[$colNameBegin];
+        $cell =& $rowCells[$colNameBegin];
+        $colspan = isset($cell[2]['colspan'])
+          ? $cell[2]['colspan']
+          : 1;
+        $rowspan = isset($cell[2]['rowspan'])
+          ? $cell[2]['rowspan']
+          : 1;
+        $cellRowNames = $this->rowspanGetRowNames($rowName, $rowspan);
+        for ($iColNext = $iColBegin + $colspan; TRUE; ++$iColNext) {
+          if (!isset($colNames[$iColNext])) {
+            // We reached the end of the table.
+            break;
+          }
+          $colNameNext = $colNames[$iColNext];
+          $colNextIsFree = TRUE;
+          // Check if there is space to expand the cell to the right.
+          foreach ($cellRowNames as $rowNameToCheck) {
+            if (isset($cells[$rowNameToCheck][$colNameNext])) {
+              // Cell is blocked. Cannot expand further.
+              $colNextIsFree = FALSE;
+              break;
+            }
+          }
+          if (!$colNextIsFree) {
+            break;
+          }
+          // Yes, there is space to expand the cell to the right.
+          ++$colspan;
+          foreach ($cellRowNames as $rowNameToCheck) {
+            $cells[$rowNameToCheck][$colNameNext] = TRUE;
+          }
+        }
+        // We are done with expanding, and set the colspan.
+        if ($colspan > 1) {
+          $cell[2]['colspan'] = $colspan;
+        }
+      }
+    }
+
+    return $cells;
   }
 
   /**
