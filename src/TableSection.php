@@ -273,7 +273,7 @@ class TableSection extends TableRows {
     $rowAttributesAll = $this->getRowAttributesAll(array_keys($matrix));
     foreach ($matrix as $rowName => $rowCells) {
       $rowHtml = '';
-      foreach ($rowCells as $colName => $cell) {
+      foreach ($rowCells as $cell) {
         list($cellHtml, $tagName, $attributes) = $cell;
         $attributes = !empty($attributes)
           ? Util::htmlAttributes($attributes)
