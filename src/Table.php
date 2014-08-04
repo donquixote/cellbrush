@@ -38,6 +38,13 @@ class Table extends TBodyWrapper {
   }
 
   /**
+   * @return self
+   */
+  static function create() {
+    return new self();
+  }
+
+  /**
    * @param string $colName
    *
    * @return $this

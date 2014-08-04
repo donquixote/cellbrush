@@ -7,7 +7,7 @@ use Donquixote\Cellbrush\Table;
 class CellbrushTest extends \PHPUnit_Framework_TestCase {
 
   function testRegularTable() {
-    $table = (new Table())
+    $table = Table::create()
       ->addRowName('row0')
       ->addRowName('row1')
       ->addRowName('row2')
@@ -44,7 +44,7 @@ EOT;
   }
 
   function testNumericKeys() {
-    $table = (new Table())
+    $table = Table::create()
       ->addRowNames([0, 1, 2])
       ->addColNames([0, 1, 2])
       ->td(0, 0, 'Diag 0')
@@ -74,7 +74,7 @@ EOT;
   }
 
   function testFullRowspan() {
-    $table = (new Table())
+    $table = Table::create()
       ->addRowNames(['row0', 'row1', 'row2'])
       ->addColNames(['col0', 'col1', 'col2'])
       ->td('row0', 'col0', 'Diag 0')
@@ -95,7 +95,7 @@ EOT;
   }
 
   function testFullColspan() {
-    $table = (new Table())
+    $table = Table::create()
       ->addRowNames(['row0', 'row1', 'row2'])
       ->addColNames(['col0', 'col1', 'col2'])
       ->td('row0', 'col0', 'Diag 0')
@@ -116,7 +116,7 @@ EOT;
   }
 
   function testColGroup() {
-    $table = (new Table())
+    $table = Table::create()
       ->addRowNames(['row0', 'row1', 'row2'])
       ->addColNames(['col0', 'col1', 'col2'])
       ->td('row0', 'col0', 'Diag 0')
@@ -145,7 +145,7 @@ EOT;
   }
 
   function testRowGroup() {
-    $table = (new Table())
+    $table = Table::create()
       ->addColNames(['legend', 'sublegend', 0, 1])
       ->addRowGroup('dimensions', ['width', 'height'])
       ->addRowName('price')
@@ -177,7 +177,7 @@ EOT;
   }
 
   function testRowAndColGroups() {
-    $table = (new Table())
+    $table = Table::create()
       ->addColName('name')
       ->addColGroup('info', ['color', 'price'])
       ->addRowGroup('banana', ['description', 'info'])
@@ -216,7 +216,7 @@ EOT;
   }
 
   function testRowHandle() {
-    $table = (new Table())
+    $table = Table::create()
       ->addRowNames(['row0', 'row1', 'row2'])
       ->addColNames(['col0', 'col1', 'col2'])
       ->td('row0', 'col0', 'Diag 0')
@@ -272,7 +272,7 @@ EOT;
   }
 
   function testRowAndColHandle() {
-    $table = (new Table())
+    $table = Table::create()
       ->addRowNames(['row0', 'row1', 'row2'])
       ->addColNames(['legend', 'col0', 'col1', 'col2'])
       ->td('row0', 'col0', 'Diag 0')
@@ -314,7 +314,7 @@ EOT;
   }
 
   function testCellRange() {
-    $table = (new Table())
+    $table = Table::create()
       ->addRowNames(['row0', 'row1', 'row2'])
       ->addColNames(['col0', 'col1', 'col2'])
       ->td('row0', 'col0', 'Cell 0.0')
@@ -339,7 +339,7 @@ EOT;
   }
 
   function testCellRangeOverlap() {
-    $table = (new Table())
+    $table = Table::create()
       ->addRowNames(['row0', 'row1', 'row2'])
       ->addColNames(['col0', 'col1', 'col2'])
       ->th('row1', 'col1', 'Middle')
@@ -363,7 +363,7 @@ EOT;
   }
 
   function testRowClass() {
-    $table = (new Table())
+    $table = Table::create()
       ->addRowNames(['row0', 'row1', 'row2'])
       ->addColNames(['col0', 'col1', 'col2'])
       ->td('row0', 'col0', 'Diag 0')
@@ -396,7 +396,7 @@ EOT;
   }
 
   function testRowStripingOddEven() {
-    $table = (new Table())
+    $table = Table::create()
       ->addRowNames(['row0', 'row1', 'row2', 'row3', 'row4', 'row5'])
       ->addColNames(['col0', 'col1', 'col2'])
       ->td('row0', 'col0', 'Diag 0')
@@ -427,7 +427,7 @@ EOT;
   }
 
   function testRowStripingAdvanced() {
-    $table = (new Table())
+    $table = Table::create()
       ->addRowNames(['row0', 'row1', 'row2', 'row3', 'row4', 'row5'])
       ->addColNames(['col0', 'col1', 'col2'])
       ->td('row0', 'col0', 'Diag 0')
@@ -461,7 +461,7 @@ EOT;
   }
 
   function testColClass() {
-    $table = (new Table())
+    $table = Table::create()
       ->addColNames(['col0', 'col1', 'col2'])
       ->addRowNames(['row0', 'row1', 'row2'])
       ->td('row0', 'col0', 'Diag 0')
