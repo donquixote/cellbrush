@@ -2,7 +2,11 @@
 
 namespace Donquixote\Cellbrush;
 
+use Donquixote\Cellbrush\Html\TagAttributesTrait;
+
 class TableSection extends TableRows implements TableSectionInterface {
+
+  use TagAttributesTrait;
 
   /**
    * @var TableColumns

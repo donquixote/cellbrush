@@ -2,7 +2,12 @@
 
 namespace Donquixote\Cellbrush;
 
-class Table extends TBodyWrapper {
+use Donquixote\Cellbrush\Html\TagAttributesInterface;
+use Donquixote\Cellbrush\Html\TagAttributesTrait;
+
+class Table extends TBodyWrapper implements TagAttributesInterface {
+
+  use TagAttributesTrait;
 
   /**
    * @var TableColumns
@@ -144,6 +149,20 @@ class Table extends TBodyWrapper {
    * @return string
    *   Rendered table html.
    */
+
+  /**
+   * @param string $class
+   *
+   * @return $this
+   */
+  function removeClass($class) {
+    unset($this->classes[$class]);
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
   function render() {
     $html = '';
     $html .= $this->thead->render('thead');
@@ -152,7 +171,7 @@ class Table extends TBodyWrapper {
     foreach ($this->tbodies as $tbody) {
       $html .= $tbody->render('tbody');
     }
-    return '<table>' . "\n" . $html . '</table>' . "\n" ;
+    return '<table' . $this->renderAttributes() . '>' . "\n" . $html . '</table>' . "\n" ;
   }
 
 } 

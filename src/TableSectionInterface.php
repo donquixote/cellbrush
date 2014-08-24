@@ -8,10 +8,12 @@
 
 namespace Donquixote\Cellbrush;
 
+use Donquixote\Cellbrush\Html\TagAttributesInterface;
+
 /**
  * Wrapper/decorator for a tbody element.
  */
-interface TableSectionInterface {
+interface TableSectionInterface extends TagAttributesInterface {
 
   /**
    * @param string $colName
