@@ -300,3 +300,6 @@ Next steps:
 * Brick-style ("overlapping") rowspan and colspan, e.g. to represent time intervals.
 * More options to set html tag attributes and classes on td/th, tr, tbdody/thead/tfoot, and the table itself.
   Ideas and pull requests are welcome!
+* Open-end cells. You only mark the top left, the rest will expand until it hits something.
+* Reordering of rows and columns after the cells are filled.
+* Insertion of new rows and columns after the cells are filled.
