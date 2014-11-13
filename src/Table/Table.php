@@ -13,8 +13,8 @@ class Table extends TBodyWrapper implements TableInterface {
 
   use MutableAttributesTrait, TableColumnsTrait, ColumnClassesTrait {
     MutableAttributesTrait::__construct as private __constructMutableAttributes;
-    TableColumnsTrait::__construct as private __constructTableColumns;
-    ColumnClassesTrait::__construct as private __constructColumnClasses;
+    TableColumnsTrait::__construct as protected __constructTableColumns;
+    ColumnClassesTrait::__construct as public __constructColumnClasses;
   }
 
   /**
