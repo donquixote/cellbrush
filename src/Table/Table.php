@@ -15,7 +15,7 @@ class Table extends TBodyWrapper implements TableInterface {
     MutableAttributesTrait::__construct as private __constructMutableAttributes;
     TableColumnsTrait::__construct as private __constructTableColumns;
     ColumnClassesTrait::__construct as private __constructColumnClasses;
-  };
+  }
 
   /**
    * @var TableSection
