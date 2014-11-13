@@ -9,14 +9,13 @@ use Donquixote\Cellbrush\Html\MutableAttributesTrait;
 use Donquixote\Cellbrush\Handle\RowHandle;
 use Donquixote\Cellbrush\TSection\TableSection;
 
-
 class Table extends TBodyWrapper implements TableInterface {
 
   use MutableAttributesTrait, TableColumnsTrait, ColumnClassesTrait {
-    MutableAttributesTrait::__construct as private __mutableAttributesConstruct;
-    TableColumnsTrait::__construct as private __tableColumnsConstruct;
-    ColumnClassesTrait::__construct as private __columnClassesConstruct;
-  }
+    MutableAttributesTrait::__construct as private __constructMutableAttributes;
+    TableColumnsTrait::__construct as private __constructTableColumns;
+    ColumnClassesTrait::__construct as private __constructColumnClasses;
+  };
 
   /**
    * @var TableSection
@@ -40,9 +39,9 @@ class Table extends TBodyWrapper implements TableInterface {
    * The constructor.
    */
   function __construct() {
-    $this->__mutableAttributesConstruct();
-    $this->__tableColumnsConstruct();
-    $this->__columnClassesConstruct();
+    $this->__constructMutableAttributes();
+    $this->__constructTableColumns();
+    $this->__constructColumnClasses();
     $this->columns;
     $this->thead = new TableSection('thead');
     parent::__construct(new TableSection('tbody'));
