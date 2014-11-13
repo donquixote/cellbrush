@@ -102,7 +102,7 @@ class Table extends TBodyWrapper implements TableInterface {
     $html = '';
     $html .= $this->thead->render($columns, $colAttributes);
     $html .= $this->tfoot->render($columns, $colAttributes);
-    $html .= parent::render($columns, $colAttributes);
+    $html .= $this->renderTBody($columns, $colAttributes);
     foreach ($this->tbodies as $tbody) {
       $html .= $tbody->render($columns, $colAttributes);
     }

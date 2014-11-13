@@ -169,7 +169,7 @@ class TBodyWrapper implements TableSectionStructureInterface {
    *
    * @return string
    */
-  function render(Axis $columns, StaticAttributesMap $tableColAttributes) {
+  function renderTBody(Axis $columns, StaticAttributesMap $tableColAttributes) {
     return $this->tbody->render($columns, $tableColAttributes);
   }
 
