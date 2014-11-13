@@ -13,7 +13,7 @@
 >
   <testsuites>
     <testsuite name="Cellbrush test suite">
-      <directory>./tests/src</directory>
+      <file>./tests/src/TravisTest.php</file>
     </testsuite>
   </testsuites>
 </phpunit>
