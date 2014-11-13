@@ -556,4 +556,30 @@ EOT;
     $this->assertXmlStringEqualsXmlString($expected, $table->render());
   }
 
+  function testTableClass() {
+    $table = Table::create()
+      ->addColNames([0, 1])
+      ->addClass('tableclass')
+      ->addClass('otherclass')
+    ;
+    $table->addRow(0)
+      ->td(0, 'cell 0.0')
+      ->td(1, 'cell 0.1')
+    ;
+
+    $expected = <<<EOT
+<table class="tableclass otherclass">
+  <tbody>
+    <tr>
+      <td>cell 0.0</td>
+      <td>cell 0.1</td>
+    </tr>
+  </tbody>
+</table>
+
+EOT;
+
+    $this->assertXmlStringEqualsXmlString($expected, $table->render());
+  }
+
 }

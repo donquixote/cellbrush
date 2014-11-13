@@ -165,4 +165,14 @@ class TBodyWrapper implements TableSectionInterface {
     return $this->tbody->render('tbody');
   }
 
+  /**
+   * @param string $class
+   *
+   * @return $this
+   */
+  function addClass($class) {
+    $this->tbody->addClass($class);
+    return $this;
+  }
+
 }
