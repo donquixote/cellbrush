@@ -31,7 +31,7 @@ API design:
 
 A simple 3x3 table with the diagonal cells filled. 
 
-    $table = (new \Donquixote\Cellbrush\Table())
+    $table = \Donquixote\Cellbrush\Table\Table::create()
       ->addRowNames(['row0', 'row1', 'row2'])
       ->addColNames(['col0', 'col1', 'col2'])
       ->td('row0', 'col0', 'Diag 0')
@@ -164,7 +164,7 @@ In the below example, the column name "products" specifies a colspan cell that s
 
 Similar to column groups.
 
-    $table = (new Table())
+    $table = Table::create()
       ->addColNames(['legend', 'sublegend', 0, 1])
       ->addRowGroup('dimensions', ['width', 'height'])
       ->addRowName('price')
