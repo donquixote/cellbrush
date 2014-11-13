@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Donquixote\Cellbrush\Columns;
 
 use Donquixote\Cellbrush\Html\Multiple\DynamicAttributesMap;

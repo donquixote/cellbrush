@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Donquixote\Cellbrush\Html;
 
 class Attributes implements AttributesInterface {

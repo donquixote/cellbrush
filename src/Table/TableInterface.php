@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Donquixote\Cellbrush\Table;
 
 use Donquixote\Cellbrush\Columns\ColumnClassesInterface;

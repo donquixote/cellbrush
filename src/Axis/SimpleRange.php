@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Donquixote\Cellbrush\Axis;
 
 class SimpleRange implements RangeInterface {

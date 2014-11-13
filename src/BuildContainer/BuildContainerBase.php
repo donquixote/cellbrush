@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Donquixote\Cellbrush\BuildContainer;
 
 use Donquixote\Cellbrush\Html\Multiple\StaticAttributesMap;

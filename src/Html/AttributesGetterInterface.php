@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Donquixote\Cellbrush\Html;
 
 interface AttributesGetterInterface {

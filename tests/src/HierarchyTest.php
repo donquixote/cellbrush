@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Donquixote\Cellbrush\Tests;
 
 use Donquixote\Cellbrush\Axis\DynamicAxis;

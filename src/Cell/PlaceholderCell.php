@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Donquixote\Cellbrush\Cell;
 
 class PlaceholderCell extends Cell {

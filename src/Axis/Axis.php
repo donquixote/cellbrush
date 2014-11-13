@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Donquixote\Cellbrush\Axis;
 
 class Axis implements RangeInterface {

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Donquixote\Cellbrush\Matrix;
 
 class OpenEndMap {

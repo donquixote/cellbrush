@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Donquixote\Cellbrush\Cell;
 
 use Donquixote\Cellbrush\Html\ElementInterface;

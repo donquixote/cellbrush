@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Donquixote\Cellbrush\Html\Multiple;
 
 use Donquixote\Cellbrush\Html\Attributes;
