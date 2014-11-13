@@ -117,7 +117,7 @@ class DynamicAxis {
    * @return $this
    * @throws \Exception
    */
-  function setOrder(array $orderedNames, $parentName = NULL) {
+  function setOrder(array $orderedNames, $parentName = null) {
     if (isset($parentName)) {
       if (!isset($this->children[$parentName])) {
         throw new \Exception("Unknown name '$parentName'.");

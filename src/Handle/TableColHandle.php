@@ -42,7 +42,7 @@ class TableColHandle extends SectionColHandle {
    *
    * @return SectionColHandle
    */
-  function tbody($sectionName = NULL) {
+  function tbody($sectionName = null) {
     return new SectionColHandle($this->table->tbody($sectionName), $this->colName);
   }
 

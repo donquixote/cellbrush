@@ -63,7 +63,7 @@ trait TableColumnsTrait {
    * @return $this
    * @throws \Exception
    */
-  function setColOrder($orderedBaseColNames, $groupPrefix = NULL) {
+  function setColOrder($orderedBaseColNames, $groupPrefix = null) {
     $this->columns->setOrder($orderedBaseColNames, $groupPrefix);
     return $this;
   }

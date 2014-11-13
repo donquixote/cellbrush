@@ -65,7 +65,7 @@ class Table extends TBodyWrapper implements TableInterface {
    *
    * @return TableSection
    */
-  function tbody($name = NULL) {
+  function tbody($name = null) {
     if (!isset($name)) {
       return parent::tbody();
     }
