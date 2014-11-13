@@ -363,4 +363,4 @@ class TableSection extends TableRows {
     return $attributesAllString;
   }
 
-} 
+}

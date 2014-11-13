@@ -32,4 +32,4 @@ class Util {
     return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
   }
 
-} 
+}

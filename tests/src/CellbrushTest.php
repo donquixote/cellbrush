@@ -519,4 +519,4 @@ EOT;
     $this->assertXmlStringEqualsXmlString($expected, $table->render());
   }
 
-} 
+}

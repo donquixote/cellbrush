@@ -44,4 +44,4 @@ class TableColHandle extends SectionColHandle {
     return new SectionColHandle($this->table->tbody($sectionName), $this->colName);
   }
 
-} 
+}

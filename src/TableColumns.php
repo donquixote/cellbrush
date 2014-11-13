@@ -189,4 +189,4 @@ class TableColumns {
     return array_slice($this->colNames, $iFirst, $iLast - $iFirst + 1);
   }
 
-} 
+}

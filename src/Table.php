@@ -281,4 +281,4 @@ class Table {
     return '<table>' . "\n" . $html . '</table>' . "\n" ;
   }
 
-} 
+}

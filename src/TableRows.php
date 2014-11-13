@@ -177,4 +177,4 @@ class TableRows {
     return array_slice($this->rowNames, $iFirst, $iLast - $iFirst + 1);
   }
 
-} 
+}
