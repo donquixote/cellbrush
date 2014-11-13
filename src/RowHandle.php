@@ -19,8 +19,6 @@ class RowHandle {
   /**
    * @param TableSection $tsection
    * @param string $rowName
-   *
-   * @internal param Table $table
    */
   function __construct(TableSection $tsection, $rowName) {
     $this->tsection = $tsection;

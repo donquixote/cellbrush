@@ -19,8 +19,6 @@ class SectionColHandle {
   /**
    * @param TableSection $tsection
    * @param string $colName
-   *
-   * @internal param Table $table
    */
   function __construct(TableSection $tsection, $colName) {
     $this->tsection = $tsection;
