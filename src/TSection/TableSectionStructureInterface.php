@@ -1,49 +1,23 @@
 <?php
 
-namespace Donquixote\Cellbrush;
-
-use Donquixote\Cellbrush\Html\TagAttributesInterface;
+namespace Donquixote\Cellbrush\TSection;
 
 /**
- * Wrapper/decorator for a tbody element.
+ * Interface for a table section, without TagAttributesInterface
  */
-interface TableSectionInterface extends TagAttributesInterface {
+interface TableSectionStructureInterface extends TableRowsInterface {
 
   /**
    * @param string $colName
    *
-   * @return SectionColHandle
+   * @return \Donquixote\Cellbrush\Handle\SectionColHandle
    */
   function colHandle($colName);
 
   /**
    * @param string $rowName
    *
-   * @return $this
-   * @throws \Exception
-   */
-  function addRowName($rowName);
-
-  /**
-   * @param string[] $rowNames
-   *
-   * @return $this
-   */
-  function addRowNames(array $rowNames);
-
-  /**
-   * @param string $groupName
-   * @param string[] $rowNameSuffixes
-   *
-   * @return $this
-   * @throws \Exception
-   */
-  function addRowGroup($groupName, array $rowNameSuffixes);
-
-  /**
-   * @param string $rowName
-   *
-   * @return RowHandle
+   * @return \Donquixote\Cellbrush\Handle\RowHandle
    * @throws \Exception
    */
   public function rowHandle($rowName);
@@ -54,7 +28,7 @@ interface TableSectionInterface extends TagAttributesInterface {
    *
    * @param $rowName
    *
-   * @return RowHandle
+   * @return \Donquixote\Cellbrush\Handle\RowHandle
    * @throws \Exception
    */
   public function addRow($rowName);

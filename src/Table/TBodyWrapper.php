@@ -1,28 +1,33 @@
 <?php
 
-namespace Donquixote\Cellbrush;
+namespace Donquixote\Cellbrush\Table;
+
+use Donquixote\Cellbrush\Axis\Axis;
+use Donquixote\Cellbrush\Html\Multiple\StaticAttributesMap;
+use Donquixote\Cellbrush\TSection\TableSection;
+use Donquixote\Cellbrush\TSection\TableSectionStructureInterface;
 
 /**
  * Wrapper/decorator for a tbody element.
  */
-class TBodyWrapper implements TableSectionInterface {
+class TBodyWrapper implements TableSectionStructureInterface {
 
   /**
-   * @var TableSection
+   * @var \Donquixote\Cellbrush\TSection\TableSection
    */
   private $tbody;
 
   /**
    * The constructor.
    *
-   * @param \Donquixote\Cellbrush\TableSection $tbody
+   * @param \Donquixote\Cellbrush\TSection\TableSection $tbody
    */
   function __construct(TableSection $tbody) {
     $this->tbody = $tbody;
   }
 
   /**
-   * @return TableSection
+   * @return \Donquixote\Cellbrush\TSection\TableSection
    */
   function tbody() {
     return $this->tbody;
@@ -31,7 +36,7 @@ class TBodyWrapper implements TableSectionInterface {
   /**
    * @param string $colName
    *
-   * @return SectionColHandle
+   * @return \Donquixote\Cellbrush\Handle\SectionColHandle
    */
   function colHandle($colName) {
     return $this->tbody->colHandle($colName);
@@ -73,7 +78,7 @@ class TBodyWrapper implements TableSectionInterface {
   /**
    * @param string $rowName
    *
-   * @return RowHandle
+   * @return \Donquixote\Cellbrush\Handle\RowHandle
    * @throws \Exception
    */
   public function rowHandle($rowName) {
@@ -86,7 +91,7 @@ class TBodyWrapper implements TableSectionInterface {
    *
    * @param $rowName
    *
-   * @return RowHandle
+   * @return \Donquixote\Cellbrush\Handle\RowHandle
    * @throws \Exception
    */
   public function addRow($rowName) {
@@ -159,20 +164,22 @@ class TBodyWrapper implements TableSectionInterface {
   }
 
   /**
+   * @param Axis $columns
+   * @param StaticAttributesMap $tableColAttributes
+   *
    * @return string
    */
-  function render() {
-    return $this->tbody->render('tbody');
+  function renderTBody(Axis $columns, StaticAttributesMap $tableColAttributes) {
+    return $this->tbody->render($columns, $tableColAttributes);
   }
 
   /**
-   * @param string $class
+   * @param string $rowName
    *
-   * @return $this
+   * @return true
    */
-  function addClass($class) {
-    $this->tbody->addClass($class);
-    return $this;
+  function rowExists($rowName) {
+    return $this->tbody->rowExists($rowName);
   }
 
 }

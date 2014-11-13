@@ -3,7 +3,6 @@
 
 namespace Donquixote\Cellbrush;
 
-
 class Util {
 
   /**

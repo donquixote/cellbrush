@@ -1,8 +1,9 @@
 <?php
 
 
-namespace Donquixote\Cellbrush;
+namespace Donquixote\Cellbrush\Handle;
 
+use Donquixote\Cellbrush\TSection\TableSection;
 
 class RowHandle {
 

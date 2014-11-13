@@ -1,8 +1,10 @@
 <?php
 
 
-namespace Donquixote\Cellbrush;
+namespace Donquixote\Cellbrush\Handle;
 
+use Donquixote\Cellbrush\Table\Table;
+use Donquixote\Cellbrush\TSection\TableSection;
 
 class TableColHandle extends SectionColHandle {
 
