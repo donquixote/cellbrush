@@ -16,7 +16,7 @@ trait TableColumnsTrait {
    */
   private $columns;
 
-  public function __construct() {
+  public function __constructTableColumns() {
     $this->columns = new DynamicAxis();
   }
 

@@ -16,8 +16,8 @@ trait ColumnClassesTrait {
    * @var DynamicAttributesMap
    */
   private $colAttributes;
-  
-  function __construct() {
+
+  function __constructColumnClasses() {
     $this->colAttributes = new DynamicAttributesMap();
   }
 

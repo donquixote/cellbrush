@@ -17,9 +17,7 @@ use Donquixote\Cellbrush\Handle\SectionColHandle;
 
 class TableSection implements TableSectionInterface {
 
-  use MutableAttributesTrait {
-    MutableAttributesTrait::__construct as private __mutableAttributesConstruct;
-  }
+  use MutableAttributesTrait;
 
   /**
    * @var string
@@ -63,7 +61,7 @@ class TableSection implements TableSectionInterface {
    * @param string $tagName
    */
   function __construct($tagName) {
-    $this->__mutableAttributesConstruct();
+    $this->__constructMutableAttributes();
     $this->tagName = $tagName;
     $this->rows = new DynamicAxis();
     $this->cellMap = new CellMap();

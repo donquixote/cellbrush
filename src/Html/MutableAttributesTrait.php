@@ -15,7 +15,7 @@ trait MutableAttributesTrait {
    */
   private $attributes;
 
-  function __construct() {
+  function __constructMutableAttributes() {
     $this->attributes = new Attributes();
   }
 
