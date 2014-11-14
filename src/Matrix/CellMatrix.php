@@ -53,7 +53,7 @@ class CellMatrix {
    */
   public function brushAddCell(BrushInterface $brush, CellInterface $cell) {
     if ($brush->hasRange()) {
-      $this->paintShadow($brush);
+      $this->brushPaintShadow($brush);
       $cell = $cell->setRowspan($brush->nRows())->setColspan($brush->nCols());
     }
 
@@ -76,7 +76,7 @@ class CellMatrix {
       if (!$this->brushIsFree($nextBrush)) {
         break;
       }
-      $this->paintShadow($nextBrush);
+      $this->brushPaintShadow($nextBrush);
       $colspan += $nextBrush->nCols();
     }
     $cell = $cell->setColspan($colspan);
@@ -142,7 +142,7 @@ class CellMatrix {
   /**
    * @param BrushInterface $brush
    */
-  private function paintShadow(BrushInterface $brush) {
+  private function brushPaintShadow(BrushInterface $brush) {
     $colIndices = $brush->getColIndices();
     foreach ($brush->getRowIndices() as $rowIndex) {
       if (!Isset($this->cells[$rowIndex])) {
