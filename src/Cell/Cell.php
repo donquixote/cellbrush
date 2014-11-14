@@ -26,11 +26,9 @@ class Cell extends Element implements CellInterface {
       // Nothing to do.
       return $this;
     }
-    if (1 === $rowspan) {
-      $colspan = null;
-    }
-    $this->rowspan = $rowspan;
-    return $this->setAttribute('rowspan', $rowspan);
+    $clone = $this->setAttribute('rowspan', $rowspan > 1 ? $rowspan : null);
+    $clone->rowspan = $rowspan;
+    return $clone;
   }
 
   /**
@@ -43,10 +41,9 @@ class Cell extends Element implements CellInterface {
       // Nothing to do.
       return $this;
     }
-    if (1 === $colspan) {
-      $colspan = null;
-    }
-    return $this->setAttribute('colspan', $colspan);
+    $clone = $this->setAttribute('colspan', $colspan > 1 ? $colspan : null);
+    $clone->colspan = $colspan;
+    return $clone;
   }
 
   /**
