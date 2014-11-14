@@ -117,6 +117,34 @@ EOT;
     $this->assertEquals($expected, $table->render());
   }
 
+  function testColGroup() {
+    $table = Table::create()
+      ->addRowNames(['row0', 'row1', 'row2'])
+      ->addColNames(['col0', 'col1', 'col2', 'cg.a', 'cg.b', 'cg.c'])
+      ->td('row0', 'col0', 'Diag 0')
+      ->td('row1', 'col1', 'Diag 1')
+      ->td('row2', 'col2', 'Diag 2')
+      ->td('row0', 'cg.a', 'GD 0.a')
+      ->td('row0', 'cg.b', 'GD 0.b')
+      ->td('row1', 'cg', 'Span')
+      ->td('row2', 'cg.a', 'GD 3.a')
+      ->td('row2', 'cg.c', 'GD 3.c')
+    ;
+
+    $expected = <<<EOT
+<table>
+  <tbody>
+    <tr><td>Diag 0</td><td></td><td></td><td>GD 0.a</td><td>GD 0.b</td><td></td></tr>
+    <tr><td></td><td>Diag 1</td><td></td><td colspan="3">Span</td></tr>
+    <tr><td></td><td></td><td>Diag 2</td><td>GD 3.a</td><td></td><td>GD 3.c</td></tr>
+  </tbody>
+</table>
+
+EOT;
+
+    $this->assertEquals($expected, $table->render());
+  }
+
   function testColGroupLegacy() {
     $table = Table::create()
       ->addRowNames(['row0', 'row1', 'row2'])
@@ -138,6 +166,37 @@ EOT;
     <tr><td>Diag 0</td><td></td><td></td><td>GD 0.a</td><td>GD 0.b</td><td></td></tr>
     <tr><td></td><td>Diag 1</td><td></td><td colspan="3">Span</td></tr>
     <tr><td></td><td></td><td>Diag 2</td><td>GD 3.a</td><td></td><td>GD 3.c</td></tr>
+  </tbody>
+</table>
+
+EOT;
+
+    $this->assertEquals($expected, $table->render());
+  }
+
+  function testRowGroup() {
+    $table = Table::create()
+      ->addColNames(['legend', 'sublegend', 0, 1])
+      ->addRowNames(['dimensions.width', 'dimensions.height', 'price'])
+      ->th('dimensions', 'legend', 'Dimensions')
+      ->th('dimensions.width', 'sublegend', 'Width')
+      ->th('dimensions.height', 'sublegend', 'Height')
+      ->th('price', 'legend', 'Price')
+    ;
+    $table->headRow()->thMultiple(['Product 0', 'Product 1']);
+    $table->rowHandle('dimensions.width')->tdMultiple(['2cm', '5cm']);
+    $table->rowHandle('dimensions.height')->tdMultiple(['14g', '22g']);
+    $table->rowHandle('price')->tdMultiple(['7,- EUR', '5,22 EUR']);
+
+    $expected = <<<EOT
+<table>
+  <thead>
+    <tr><td></td><td></td><th>Product 0</th><th>Product 1</th></tr>
+  </thead>
+  <tbody>
+    <tr><th rowspan="2">Dimensions</th><th>Width</th><td>2cm</td><td>5cm</td></tr>
+    <tr><th>Height</th><td>14g</td><td>22g</td></tr>
+    <tr><th>Price</th><td></td><td>7,- EUR</td><td>5,22 EUR</td></tr>
   </tbody>
 </table>
 
@@ -170,6 +229,44 @@ EOT;
     <tr><th rowspan="2">Dimensions</th><th>Width</th><td>2cm</td><td>5cm</td></tr>
     <tr><th>Height</th><td>14g</td><td>22g</td></tr>
     <tr><th>Price</th><td></td><td>7,- EUR</td><td>5,22 EUR</td></tr>
+  </tbody>
+</table>
+
+EOT;
+
+    $this->assertEquals($expected, $table->render());
+  }
+
+  function testRowAndColGroups() {
+    $table = Table::create()
+      ->addColNames(['name', 'info.color', 'info.price'])
+      ->addRowNames(['banana.description', 'banana.info'])
+      ->th('banana', 'name', 'Banana')
+      ->td('banana.description', 'info', 'A yellow fruit.')
+      ->td('banana.info', 'info.color', 'yellow')
+      ->td('banana.info', 'info.price', '60 cent')
+      ->addRowNames(['coconut.description', 'coconut.info'])
+      ->th('coconut', 'name', 'Coconut')
+      ->td('coconut.description', 'info', 'Has liquid inside.')
+      ->td('coconut.info', 'info.color', 'brown')
+      ->td('coconut.info', 'info.price', '3 dollar')
+    ;
+    $table->headRow()
+      ->th('name', 'Name')
+      ->th('info.color', 'Color')
+      ->th('info.price', 'Price')
+    ;
+
+    $expected = <<<EOT
+<table>
+  <thead>
+    <tr><th>Name</th><th>Color</th><th>Price</th></tr>
+  </thead>
+  <tbody>
+    <tr><th rowspan="2">Banana</th><td colspan="2">A yellow fruit.</td></tr>
+    <tr><td>yellow</td><td>60 cent</td></tr>
+    <tr><th rowspan="2">Coconut</th><td colspan="2">Has liquid inside.</td></tr>
+    <tr><td>brown</td><td>3 dollar</td></tr>
   </tbody>
 </table>
 
