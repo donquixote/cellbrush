@@ -441,4 +441,4 @@ You can see more examples in [the unit tests](https://github.com/donquixote/cell
 
 Next steps:
 
-* Option to set html tag attributes and classes on individual cells (th, td).
+* Collision detection.
