@@ -140,6 +140,11 @@ class CellMatrix {
   }
 
   /**
+   * Fills an area with shadow cells.
+   *
+   * This has to be private, because it breaks the matrix invariant of being a
+   * valid html table.
+   *
    * @param BrushInterface $brush
    */
   private function brushPaintShadow(BrushInterface $brush) {
