@@ -387,6 +387,43 @@ $table->addColClass('col0', 'allSectionsColumn0');
 $table->tbody()->addColClass('col0', 'tbodyColumn0');
 ```
 
+## Column Reordering
+
+Columns can be reordered even after the cells are already added.
+
+```php
+// Create a table, and render it.
+$table = Table::create()
+  ->addRowNames(['row0', 'row1', 'row2'])
+  ->addColNames(['col0', 'col1', 'col2'])
+  ->td('row0', 'col0', 'Diag 0')
+  ->td('row1', 'col1', 'Diag 1')
+  ->td('row2', 'col2', 'Diag 2')
+;
+print $table->render();
+```
+
+<table>
+  <tbody>
+    <tr><td>Diag 0</td><td></td><td></td></tr>
+    <tr><td></td><td>Diag 1</td><td></td></tr>
+    <tr><td></td><td></td><td>Diag 2</td></tr>
+  </tbody>
+</table>
+
+```php
+// Reorder the columns, and render again.
+$table->setColOrder(['col1', 'col2', 'col0']);
+print $table->render();
+```
+
+<table>
+  <tbody>
+    <tr><td></td><td></td><td>Diag 0</td></tr>
+    <tr><td>Diag 1</td><td></td><td></td></tr>
+    <tr><td></td><td>Diag 2</td><td></td></tr>
+  </tbody>
+</table>
 
 ## More examples?
 
