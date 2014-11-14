@@ -184,4 +184,24 @@ class CellMatrix {
     return $this->cells;
   }
 
+  /**
+   * Renders the inner html of the table section.
+   *
+   * This is only used for testing.
+   *
+   * @return string
+   *   The inner html of a table section.
+   */
+  public function renderAsTable() {
+    $html = '';
+    foreach ($this->cells as $iRow => $rowCells) {
+      $rowHtml = '';
+      foreach ($rowCells as $iCol => $cell) {
+        $rowHtml .= $cell->render();
+      }
+      $html .= '    <tr>' . $rowHtml . '</tr>' . "\n";
+    }
+    return "<table>\n  <tbody>\n" . $html . "  </tbody>\n</table>\n";
+  }
+
 }
