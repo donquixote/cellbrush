@@ -31,14 +31,16 @@ API design:
 
 A simple 3x3 table with the diagonal cells filled. 
 
-    $table = \Donquixote\Cellbrush\Table\Table::create()
-      ->addRowNames(['row0', 'row1', 'row2'])
-      ->addColNames(['col0', 'col1', 'col2'])
-      ->td('row0', 'col0', 'Diag 0')
-      ->td('row1', 'col1', 'Diag 1')
-      ->td('row2', 'col2', 'Diag 2')
-    ;
-    $html = $table->render();
+```php
+$table = \Donquixote\Cellbrush\Table\Table::create()
+  ->addRowNames(['row0', 'row1', 'row2'])
+  ->addColNames(['col0', 'col1', 'col2'])
+  ->td('row0', 'col0', 'Diag 0')
+  ->td('row1', 'col1', 'Diag 1')
+  ->td('row2', 'col2', 'Diag 2')
+;
+$html = $table->render();
+```
 
 <table>
   <tbody>
@@ -54,14 +56,16 @@ A table like above, but with added thead section.
 
 Column names are shared between table sections, but new rows need to be defined for each section.
 
-    $table = ...
-    $table->thead()
-      ->addRowName('head row')
-      ->th('head row', 'col0', 'H0')
-      ->th('head row', 'col1', 'H1')
-      ->th('head row', 'col2', 'H2')
-    ;
-    $html = $table->render();
+```php
+$table = ...
+$table->thead()
+  ->addRowName('head row')
+  ->th('head row', 'col0', 'H0')
+  ->th('head row', 'col1', 'H1')
+  ->th('head row', 'col2', 'H2')
+;
+$html = $table->render();
+```
 
 <table>
   <thead>
@@ -80,14 +84,18 @@ By default, every addRowName() and td() or th() goes into the main tbody section
 
 So, the following two are equivalent:
 
-    $table->td('row0', 'col0', 'Cell contents');
-    $table->tbody()->td('row0', 'col0', 'Cell contents');
+```php
+$table->td('row0', 'col0', 'Cell contents');
+$table->tbody()->td('row0', 'col0', 'Cell contents');
+```
 
 More named tbody sections can be added like this:
 
-    $table->tbody('tb1')
-      ->addRowName(..)
-      ->td(..)
+```php
+$table->tbody('tb1')
+  ->addRowName(..)
+  ->td(..)
+```
 
 Again, the column definitions are shared between table sections, but row
 definitions need to be added separately.
@@ -98,14 +106,16 @@ definitions need to be added separately.
 To let a cell span the entire width of the table, simply set the column name to ''.
 Likewise, set the row name to '' to span the entire height of the table section.
 
-    $table->thead()
-      ->addRowName('head row')
-      ->td('head row', '', 'Horizontal cell in thead.')
-    ;
-    $table
-      ->...
-      ->td('', 'col1', 'Vertical cell')
-    ;
+```php
+$table->thead()
+  ->addRowName('head row')
+  ->td('head row', '', 'Horizontal cell in thead.')
+;
+$table
+  ->...
+  ->td('', 'col1', 'Vertical cell')
+;
+```
 
 <table>
   <thead>
@@ -123,31 +133,33 @@ Likewise, set the row name to '' to span the entire height of the table section.
 Named column groups allow for cells with colspan.
 In the below example, the column name "products" specifies a colspan cell that spans all 3 products.* cells, whereas "products.a", "products.b" and "products.c" specifies specific cells without colspan. 
 
-    $table
-      ->addColName('legend')
-      ->addColGroup('products', ['a', 'b', 'c'])
-    ;
-    $table->thead()
-      ->addRowName('head')
-      ->th('head', 'legend', 'Legend')
-      // The "Products" label will span 3 columns: products.a, products.b, products.c
-      ->th('head', 'products', 'Products')
-      ->addRowName('name')
-      ->th('name', 'legend', 'Product name')
-      ->th('name', 'products.a', 'Product A')
-      ->th('name', 'products.b', 'Product B')
-      ->th('name', 'products.c', 'Product C')
-    ;
-    $table
-      ->addRowName('width')
-      ->th('width', 'legend', 'Width')
-      ->td('width', 'products.a', '55 cm')
-      ->td('width', 'products.b', '102 cm')
-      ..
-      ->addRowName('height')
-      ..
-      ->addRowName('price')
-      ->td('price', 'products.a', '7.66 EUR')
+```php
+$table
+  ->addColName('legend')
+  ->addColGroup('products', ['a', 'b', 'c'])
+;
+$table->thead()
+  ->addRowName('head')
+  ->th('head', 'legend', 'Legend')
+  // The "Products" label will span 3 columns: products.a, products.b, products.c
+  ->th('head', 'products', 'Products')
+  ->addRowName('name')
+  ->th('name', 'legend', 'Product name')
+  ->th('name', 'products.a', 'Product A')
+  ->th('name', 'products.b', 'Product B')
+  ->th('name', 'products.c', 'Product C')
+;
+$table
+  ->addRowName('width')
+  ->th('width', 'legend', 'Width')
+  ->td('width', 'products.a', '55 cm')
+  ->td('width', 'products.b', '102 cm')
+  ..
+  ->addRowName('height')
+  ..
+  ->addRowName('price')
+  ->td('price', 'products.a', '7.66 EUR')
+```
 
 <table>
   <thead>
@@ -164,20 +176,21 @@ In the below example, the column name "products" specifies a colspan cell that s
 
 Similar to column groups.
 
-    $table = Table::create()
-      ->addColNames(['legend', 'sublegend', 0, 1])
-      ->addRowGroup('dimensions', ['width', 'height'])
-      ->addRowName('price')
-      ->th('dimensions', 'legend', 'Dimensions')
-      ->th('dimensions.width', 'sublegend', 'Width')
-      ->th('dimensions.height', 'sublegend', 'Height')
-      ->th('price', 'legend', 'Price')
-    ;
-    $table->headRow()->thMultiple(['Product 0', 'Product 1']);
-    $table->rowHandle('dimensions.width')->tdMultiple(['2cm', '5cm']);
-    $table->rowHandle('dimensions.height')->tdMultiple(['14g', '22g']);
-    $table->rowHandle('price')->tdMultiple(['7,- EUR', '5,22 EUR']);
-
+```php
+$table = Table::create()
+  ->addColNames(['legend', 'sublegend', 0, 1])
+  ->addRowGroup('dimensions', ['width', 'height'])
+  ->addRowName('price')
+  ->th('dimensions', 'legend', 'Dimensions')
+  ->th('dimensions.width', 'sublegend', 'Width')
+  ->th('dimensions.height', 'sublegend', 'Height')
+  ->th('price', 'legend', 'Price')
+;
+$table->headRow()->thMultiple(['Product 0', 'Product 1']);
+$table->rowHandle('dimensions.width')->tdMultiple(['2cm', '5cm']);
+$table->rowHandle('dimensions.height')->tdMultiple(['14g', '22g']);
+$table->rowHandle('price')->tdMultiple(['7,- EUR', '5,22 EUR']);
+```
 
 <table>
   <thead>
@@ -192,25 +205,27 @@ Similar to column groups.
 
 ## Combination of row groups and column groups
 
-    $table = (new Table())
-      ->addColName('name')
-      ->addColGroup('info', ['color', 'price'])
-      ->addRowGroup('banana', ['description', 'info'])
-      ->th('banana', 'name', 'Banana')
-      ->td('banana.description', 'info', 'A yellow fruit.')
-      ->td('banana.info', 'info.color', 'yellow')
-      ->td('banana.info', 'info.price', '60 cent')
-      ->addRowGroup('coconut', ['description', 'info'])
-      ->th('coconut', 'name', 'Coconut')
-      ->td('coconut.description', 'info', 'Has liquid inside.')
-      ->td('coconut.info', 'info.color', 'brown')
-      ->td('coconut.info', 'info.price', '3 dollar')
-    ;
-    $table->headRow()
-      ->th('name', 'Name')
-      ->th('info.color', 'Color')
-      ->th('info.price', 'Price')
-    ;
+```php
+$table = (new Table())
+  ->addColName('name')
+  ->addColGroup('info', ['color', 'price'])
+  ->addRowGroup('banana', ['description', 'info'])
+  ->th('banana', 'name', 'Banana')
+  ->td('banana.description', 'info', 'A yellow fruit.')
+  ->td('banana.info', 'info.color', 'yellow')
+  ->td('banana.info', 'info.price', '60 cent')
+  ->addRowGroup('coconut', ['description', 'info'])
+  ->th('coconut', 'name', 'Coconut')
+  ->td('coconut.description', 'info', 'Has liquid inside.')
+  ->td('coconut.info', 'info.color', 'brown')
+  ->td('coconut.info', 'info.price', '3 dollar')
+;
+$table->headRow()
+  ->th('name', 'Name')
+  ->th('info.color', 'Color')
+  ->th('info.price', 'Price')
+;
+```
 
 <table>
   <thead>
@@ -229,23 +244,25 @@ Similar to column groups.
 
 RowHandle and \*ColHandle allow you to omit one of $rowName and $colName to address a table cell.
 
-    $table = (new Table())
-      ->addRowNames(['row0', 'row1', 'row2'])
-      ->addColNames(['legend', 'col0', 'col1', 'col2'])
-      ...
-    ;
-    // Add cells in a "head0" row in the thead section.
-    $table->headRow()
-      ->th('col0', 'Column 0')
-      ->th('col1', 'Column 1')
-      ->th('col2', 'Column 2')
-    ;
-    // Add cells in a "legend" column.
-    $table->colHandle('legend')
-      ->th('row0', 'Row 0')
-      ->th('row1', 'Row 1')
-      ->th('row2', 'Row 2')
-    ;
+```php
+$table = (new Table())
+  ->addRowNames(['row0', 'row1', 'row2'])
+  ->addColNames(['legend', 'col0', 'col1', 'col2'])
+  ...
+;
+// Add cells in a "head0" row in the thead section.
+$table->headRow()
+  ->th('col0', 'Column 0')
+  ->th('col1', 'Column 1')
+  ->th('col2', 'Column 2')
+;
+// Add cells in a "legend" column.
+$table->colHandle('legend')
+  ->th('row0', 'Row 0')
+  ->th('row1', 'Row 1')
+  ->th('row2', 'Row 2')
+;
+```
 
 <table>
   <thead>
@@ -263,7 +280,9 @@ RowHandle and \*ColHandle allow you to omit one of $rowName and $colName to addr
 
 Row classes can be added quite easily with `addRowClass()`.
 
-    $table->addRowClass('row0', 'rowClass0');
+```php
+$table->addRowClass('row0', 'rowClass0');
+```
 
 ## Row striping
 
@@ -271,10 +290,12 @@ Row striping classes can be added to a table section with `addRowStriping()`.
 
 The default striping is `['odd', 'even']`, but different patterns can be added with three or more stripes.
 
-    // Odd/even zebra striping.
-    $table->addRowStriping();
-    // 3-way striping.
-    $table->addRowStriping(['1of3', '2of3', '3of3']);
+```php
+// Odd/even zebra striping.
+$table->addRowStriping();
+// 3-way striping.
+$table->addRowStriping(['1of3', '2of3', '3of3']);
+```
 
 The striping always applies to a table section. By default, this wil be the main tbody section.
 
@@ -284,8 +305,10 @@ The striping always applies to a table section. By default, this wil be the main
 You can use `addColClass()` to add a class to all cells of a column.
 This can be done either for all table sections at once, or for specific table sections.
 
-    $table->addColClass('col0', 'allSectionsColumn0');
-    $table->tbody()->addColClass('col0', 'tbodyColumn0');
+```php
+$table->addColClass('col0', 'allSectionsColumn0');
+$table->tbody()->addColClass('col0', 'tbodyColumn0');
+```
 
 
 ## More examples?
