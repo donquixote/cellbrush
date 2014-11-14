@@ -136,10 +136,7 @@ Named column groups allow for cells with colspan.
 In the below example, the column name "products" specifies a colspan cell that spans all 3 products.* cells, whereas "products.a", "products.b" and "products.c" specifies specific cells without colspan. 
 
 ```php
-$table
-  ->addColName('legend')
-  ->addColGroup('products', ['a', 'b', 'c'])
-;
+$table->addColNames(['legend', 'products.a', 'products.b', 'products.c']);
 $table->thead()
   ->addRowName('head')
   ->th('head', 'legend', 'Legend')
@@ -181,8 +178,7 @@ Similar to column groups.
 ```php
 $table = Table::create()
   ->addColNames(['legend', 'sublegend', 0, 1])
-  ->addRowGroup('dimensions', ['width', 'height'])
-  ->addRowName('price')
+  ->addRowNames(['dimensions.width', 'dimensions.height', 'price'])
   ->th('dimensions', 'legend', 'Dimensions')
   ->th('dimensions.width', 'sublegend', 'Width')
   ->th('dimensions.height', 'sublegend', 'Height')
@@ -210,13 +206,13 @@ $table->rowHandle('price')->tdMultiple(['7,- EUR', '5,22 EUR']);
 ```php
 $table = (new Table())
   ->addColName('name')
-  ->addColGroup('info', ['color', 'price'])
-  ->addRowGroup('banana', ['description', 'info'])
+  ->addColNames(['info.color', 'info.price'])
+  ->addRowNames(['banana.description', 'banana.info'])
   ->th('banana', 'name', 'Banana')
   ->td('banana.description', 'info', 'A yellow fruit.')
   ->td('banana.info', 'info.color', 'yellow')
   ->td('banana.info', 'info.price', '60 cent')
-  ->addRowGroup('coconut', ['description', 'info'])
+  ->addRowNames(['coconut.description', 'coconut.info'])
   ->th('coconut', 'name', 'Coconut')
   ->td('coconut.description', 'info', 'Has liquid inside.')
   ->td('coconut.info', 'info.color', 'brown')
