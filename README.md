@@ -205,18 +205,22 @@ $table->rowHandle('price')->tdMultiple(['7,- EUR', '5,22 EUR']);
 
 ```php
 $table = (new Table())
+  // Add columns.
   ->addColName('name')
   ->addColNames(['info.color', 'info.price'])
+  // Add banana row group.
   ->addRowNames(['banana.description', 'banana.info'])
   ->th('banana', 'name', 'Banana')
   ->td('banana.description', 'info', 'A yellow fruit.')
   ->td('banana.info', 'info.color', 'yellow')
   ->td('banana.info', 'info.price', '60 cent')
-  ->addRowNames(['coconut.description', 'coconut.info'])
-  ->th('coconut', 'name', 'Coconut')
-  ->td('coconut.description', 'info', 'Has liquid inside.')
-  ->td('coconut.info', 'info.color', 'brown')
-  ->td('coconut.info', 'info.price', '3 dollar')
+;
+// Alternative syntax with handles, see "Shortcut syntax" below.
+$table->addRow('coconut')->th('name', 'Coconut');
+$table->addRow('coconut.description')->td('info', 'Has liquid inside.');
+$table->addRow('coconut.info')
+  ->td('info.color', 'brown')
+  ->td('info.price', '3 dollar')
 ;
 $table->headRow()
   ->th('name', 'Name')
