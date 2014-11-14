@@ -481,6 +481,12 @@ EOT;
       ->tdOpenEnd(5, '5')
       ->tdOpenEnd(6, '6..7')
     ;
+    $table->addRow(2)
+      ->tdOpenEnd(0, '0..1')
+      ->tdOpenEnd(2, '2..3')
+      ->tdOpenEnd(4, '4..6')
+      ->tdOpenEnd(7, '7')
+    ;
 
     $expected = <<<EOT
 <table>
@@ -500,6 +506,12 @@ EOT;
       <td colspan="2">3..4</td>
       <td>5</td>
       <td colspan="2">6..7</td>
+    </tr>
+    <tr>
+      <td colspan="2">0..1</td>
+      <td colspan="2">2..3</td>
+      <td colspan="3">4..6</td>
+      <td>7</td>
     </tr>
   </tbody>
 </table>

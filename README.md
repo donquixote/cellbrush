@@ -241,6 +241,54 @@ $table->headRow()
   </tbody>
 </table>
 
+## Open-ended cells
+
+Open-end cells allow overlapping colspan cells, like bricks in a wall.
+
+```php
+$table = (new Table())->addColNames([0, 1, 2, 3, 4, 5, 6, 7]);
+$table->addRow(0)->tdMultiple([0, 1, 2, 3, 4, 5, 6, 7]);
+$table->addRow(1)
+  ->tdOpenEnd(0, '0..2')
+  ->tdOpenEnd(3, '3..4')
+  ->tdOpenEnd(5, '5')
+  ->tdOpenEnd(6, '6..7')
+;
+$table->addRow(2)
+  ->tdOpenEnd(0, '0..1')
+  ->tdOpenEnd(2, '2..3')
+  ->tdOpenEnd(4, '4..6')
+  ->tdOpenEnd(7, '7')
+;
+```
+
+<table>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <td colspan="3">0..2</td>
+      <td colspan="2">3..4</td>
+      <td>5</td>
+      <td colspan="2">6..7</td>
+    </tr>
+    <tr>
+      <td colspan="2">0..1</td>
+      <td colspan="2">2..3</td>
+      <td colspan="3">4..6</td>
+      <td>7</td>
+    </tr>
+  </tbody>
+</table>
+
 
 ## Shortcut syntax with row handles and column handles
 
