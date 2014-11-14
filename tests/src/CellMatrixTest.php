@@ -18,7 +18,7 @@ class CellMatrixTest extends \PHPUnit_Framework_TestCase {
     $brush = new RangedBrush($rowRange, $colRange);
     $cell = new Cell('td', '0..1');
 
-    $cellMatrix->addCell($brush, $cell);
+    $cellMatrix->brushAddCell($brush, $cell);
     $this->assertEquals(
       [[
         $cell,

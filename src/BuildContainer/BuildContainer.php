@@ -174,7 +174,7 @@ class BuildContainer extends BuildContainerBase {
       foreach ($rowCells as $colName => $cell) {
         $colRange = $this->columns->subtreeRange($colName);
         $brush = new RangedBrush($rowRange, $colRange);
-        $matrix->addCell($brush, $cell);
+        $matrix->brushAddCell($brush, $cell);
       }
     }
 

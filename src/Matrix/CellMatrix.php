@@ -51,7 +51,7 @@ class CellMatrix {
    * @param BrushInterface $brush
    * @param CellInterface $cell
    */
-  public function addCell(BrushInterface $brush, CellInterface $cell) {
+  public function brushAddCell(BrushInterface $brush, CellInterface $cell) {
     if ($brush->hasRange()) {
       $this->paintShadow($brush);
       $cell = $cell->setRowspan($brush->nRows())->setColspan($brush->nCols());
