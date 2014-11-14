@@ -241,6 +241,33 @@ $table->headRow()
   </tbody>
 </table>
 
+## Nested groups
+
+Groups can have unlimited depth.
+
+```php
+$table = Table::create()
+  ->addRowNames(['T', 'B.T', 'B.B.T', 'B.B.B'])
+  ->addColNames(['L', 'R.L', 'R.R.L', 'R.R.R'])
+  ->td('T', '', 'top')
+  ->td('B', 'L', 'bottom left')
+  ->td('B.T', 'R', 'B.T / R')
+  ->td('B.B', 'R.L', 'B.B / R.L')
+  ->td('B.B.T', 'R.R', 'B.B.T / R.R')
+  ->td('B.B.B', 'R.R.L', 'B.B.B / R.R.L')
+  ->td('B.B.B', 'R.R.R', 'B.B.B / R.R.R')
+;
+```
+
+<table>
+  <tbody>
+    <tr><td colspan="4">top</td></tr>
+    <tr><td rowspan="3">bottom left</td><td colspan="3">B.T / R</td></tr>
+    <tr><td rowspan="2">B.B / R.L</td><td colspan="2">B.B.T / R.R</td></tr>
+    <tr><td>B.B.B / R.R.L</td><td>B.B.B / R.R.R</td></tr>
+  </tbody>
+</table>
+
 ## Open-ended cells
 
 Open-end cells allow overlapping colspan cells, like bricks in a wall.
