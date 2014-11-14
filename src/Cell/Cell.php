@@ -59,4 +59,12 @@ class Cell extends Element implements CellInterface {
   public function getColspan() {
     return $this->colspan;
   }
+
+  /**
+   * @return bool
+   *   true, if rowspan > 1 or colspan > 1.
+   */
+  public function hasRange() {
+    return $this->rowspan > 1 && $this->colspan > 1;
+  }
 }

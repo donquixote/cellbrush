@@ -68,4 +68,12 @@ class ShadowCell implements CellInterface {
   public function getColspan() {
     return 1;
   }
+
+  /**
+   * @return bool
+   *   true, if rowspan > 1 or colspan > 1.
+   */
+  public function hasRange() {
+    return false;
+  }
 }
