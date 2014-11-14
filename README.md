@@ -442,3 +442,4 @@ You can see more examples in [the unit tests](https://github.com/donquixote/cell
 Next steps:
 
 * Collision detection.
+* Dedicated exception classes.
