@@ -162,6 +162,17 @@ class CellMatrix {
   }
 
   /**
+   * @param string[][][] $cellClasses
+   */
+  public function setCellClasses(array $cellClasses) {
+    foreach ($cellClasses as $iRow => $rowCellClasses) {
+      foreach ($rowCellClasses as $iCol => $classes) {
+        $this->cells[$iRow][$iCol] = $this->cells[$iRow][$iCol]->addClasses($classes);
+      }
+    }
+  }
+
+  /**
    * @return \Donquixote\Cellbrush\Cell\CellInterface[][]
    */
   public function getCells() {

@@ -113,4 +113,13 @@ interface TableSectionStructureInterface extends TableRowsInterface {
    */
   function thOpenEnd($rowName, $colName, $content);
 
+  /**
+   * @param string $rowName
+   * @param string $colName
+   * @param string $class
+   *
+   * @return $this
+   */
+  public function addCellClass($rowName, $colName, $class);
+
 }

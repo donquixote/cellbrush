@@ -616,4 +616,31 @@ EOT;
     $this->assertEquals($expected, $table->render());
   }
 
+  function testCellClass() {
+
+    $table = Table::create()
+      ->addRowNames(['row0', 'row1', 'row2'])
+      ->addColNames(['col0', 'col1', 'col2'])
+      ->td('row0', 'col0', 'Diag 0')
+      ->td('row1', 'col1', 'Diag 1')
+      ->td('row2', 'col2', 'Diag 2')
+      ->addCellClass('row0', 'col1', 'testclass')
+      ->addCellClass('row2', 'col2', 'diag2')
+    ;
+
+    $expected = <<<EOT
+<table>
+  <tbody>
+    <tr><td>Diag 0</td><td class="testclass"></td><td></td></tr>
+    <tr><td></td><td>Diag 1</td><td></td></tr>
+    <tr><td></td><td></td><td class="diag2">Diag 2</td></tr>
+  </tbody>
+</table>
+
+EOT;
+
+    $this->assertEquals($expected, $table->render());
+
+  }
+
 }

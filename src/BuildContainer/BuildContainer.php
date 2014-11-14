@@ -80,11 +80,15 @@ class BuildContainer extends BuildContainerBase {
   protected function get_NamedCells() {
     $cellContents = $this->CellContents;
     $cellTagNames = $this->CellTagNames;
+    $cellClasses = $this->CellClasses;
     /** @var Cell\Cell[][] $namedCells */
     $namedCells = [];
     foreach ($cellContents as $rowName => $rowCellContents) {
       $rowCellTagNames = isset($cellTagNames[$rowName])
         ? $cellTagNames[$rowName]
+        : [];
+      $rowCellClasses = isset($cellClasses[$rowName])
+        ? $cellClasses[$rowName]
         : [];
       $rowNamedCells = [];
       foreach ($rowCellContents as $colName => $cellContent) {
@@ -92,6 +96,9 @@ class BuildContainer extends BuildContainerBase {
           ? 'th'
           : 'td';
         $cell = new Cell\Cell($cellTagName, $cellContent);
+        if (isset($rowCellClasses[$colName])) {
+          $cell = $cell->addClasses($rowCellClasses[$colName]);
+        }
         $rowNamedCells[$colName] = $cell;
       }
       $namedCells[$rowName] = $rowNamedCells;
@@ -144,6 +151,23 @@ class BuildContainer extends BuildContainerBase {
     $matrix = new CellMatrix(
       $this->nRows,
       $this->MatrixEmptyRow);
+
+    $cellClassesIndexed = [];
+    foreach ($this->CellClasses as $rowName => $rowCellClasses) {
+      if ($this->rows->nameIsLeaf($rowName)) {
+        $iRow = $this->rows->subtreeIndex($rowName);
+        $rowCellClassesIndexed = [];
+        foreach ($rowCellClasses as $colName => $classes) {
+          if ($this->columns->nameIsLeaf($colName)) {
+            $iCol = $this->columns->subtreeIndex($colName);
+            $rowCellClassesIndexed[$iCol] = $classes;
+          }
+        }
+        $cellClassesIndexed[$iRow] = $rowCellClassesIndexed;
+      }
+    }
+
+    $matrix->setCellClasses($cellClassesIndexed);
 
     foreach ($this->NamedCells as $rowName => $rowCells) {
       $rowRange = $this->rows->subtreeRange($rowName);
