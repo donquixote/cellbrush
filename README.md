@@ -50,6 +50,8 @@ $html = $table->render();
   </tbody>
 </table>
 
+Too verbose? Look for "Shortcut syntax" below.
+
 ## Cells in thead and tfoot
 
 A table like above, but with added thead section.
