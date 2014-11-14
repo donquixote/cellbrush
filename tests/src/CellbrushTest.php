@@ -117,7 +117,7 @@ EOT;
     $this->assertEquals($expected, $table->render());
   }
 
-  function testColGroup() {
+  function testColGroupLegacy() {
     $table = Table::create()
       ->addRowNames(['row0', 'row1', 'row2'])
       ->addColNames(['col0', 'col1', 'col2'])
@@ -146,7 +146,7 @@ EOT;
     $this->assertEquals($expected, $table->render());
   }
 
-  function testRowGroup() {
+  function testRowGroupLegacy() {
     $table = Table::create()
       ->addColNames(['legend', 'sublegend', 0, 1])
       ->addRowGroup('dimensions', ['width', 'height'])
@@ -178,7 +178,7 @@ EOT;
     $this->assertEquals($expected, $table->render());
   }
 
-  function testRowAndColGroups() {
+  function testRowAndColGroupsLegacy() {
     $table = Table::create()
       ->addColName('name')
       ->addColGroup('info', ['color', 'price'])
