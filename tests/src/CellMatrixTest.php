@@ -11,7 +11,7 @@ use Donquixote\Cellbrush\Matrix\RangedBrush;
 
 class CellMatrixTest extends \PHPUnit_Framework_TestCase {
 
-  function testCellMatrix() {
+  function testCellMatrixWithBrush() {
     $cellMatrix = CellMatrix::create(1, 2);
     $rowRange = new SimpleRange(0, 1);
     $colRange = new SimpleRange(0, 1);
@@ -34,4 +34,5 @@ class CellMatrixTest extends \PHPUnit_Framework_TestCase {
       ]],
       $cellMatrix->getCells());
   }
+
 }
