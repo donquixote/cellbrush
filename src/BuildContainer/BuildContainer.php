@@ -9,7 +9,6 @@ use Donquixote\Cellbrush\Html\Attributes;
 use Donquixote\Cellbrush\Html\AttributesInterface;
 use Donquixote\Cellbrush\Html\Multiple\StaticAttributesMap;
 use Donquixote\Cellbrush\Matrix\CellMatrix;
-use Donquixote\Cellbrush\Matrix\RangedBrush;
 
 /**
  * @property Cell\CellInterface[][] NamedCells
@@ -173,17 +172,23 @@ class BuildContainer extends BuildContainerBase {
       $rowRange = $this->rows->subtreeRange($rowName);
       foreach ($rowCells as $colName => $cell) {
         $colRange = $this->columns->subtreeRange($colName);
-        $brush = new RangedBrush($rowRange, $colRange);
-        $matrix->brushAddCell($brush, $cell);
+        $cell = $cell->setRowspan($rowRange->getCount())->setColspan($colRange->getCount());
+        $matrix->addCell($rowRange->iMin(), $colRange->iMin(), $cell);
       }
     }
 
     foreach ($this->OpenEndCells as $rowName => $rowCells) {
-      $rowRange = $this->rows->subtreeRange($rowName);
+      $iRow = $this->rows->subtreeIndex($rowName);
       foreach ($rowCells as $colName => $cTrue) {
+        $iCol = $this->columns->subtreeIndex($colName);
         $colRange = $this->columns->subtreeRange($colName);
-        $brush = new RangedBrush($rowRange, $colRange);
-        $matrix->brushCellGrowRight($brush);
+        /** @var \Donquixote\Cellbrush\Axis\RangeInterface $colRange */
+        while ($colRange = $colRange->getNext()) {
+          $iColSup = $colRange->iSup();
+          if (!$matrix->cellGrowRight($iRow, $iCol, $iColSup)) {
+            break;
+          }
+        }
       }
     }
 
