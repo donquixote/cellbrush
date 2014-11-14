@@ -54,13 +54,10 @@ class CellMatrix {
   public function addCell(BrushInterface $brush, CellInterface $cell) {
     if ($brush->hasRange()) {
       $this->paintShadow($brush);
+      $cell = $cell->setRowspan($brush->nRows())->setColspan($brush->nCols());
     }
-    list($iRow, $iCol) = $brush->getPosition();
 
-    // Set the cell.
-    $this->cells[$iRow][$iCol] = $cell
-      ->setRowspan($brush->nRows())
-      ->setColspan($brush->nCols());
+    $this->cells[$brush->iRow()][$brush->iCol()] = $cell;
   }
 
   /**
@@ -170,4 +167,5 @@ class CellMatrix {
   public function getCells() {
     return $this->cells;
   }
+
 }

@@ -164,6 +164,40 @@ class TBodyWrapper implements TableSectionStructureInterface {
   }
 
   /**
+   * Adds a td cell with a colspan that ends where the next known cell begins.
+   *
+   * @param string|string[] $rowName
+   *   Row name, group or range.
+   * @param string|string[] $colName
+   *   Column name, group or range.
+   * @param string $content
+   *   HTML cell content.
+   *
+   * @return $this
+   * @throws \Exception
+   */
+  function tdOpenEnd($rowName, $colName, $content) {
+    return $this->tbody->tdOpenEnd($rowName, $colName, $content);
+  }
+
+  /**
+   * Adds a th cell with a colspan that ends where the next known cell begins.
+   *
+   * @param string $rowName
+   *   Row name, group or range.
+   * @param string $colName
+   *   Column name, group or range.
+   * @param string $content
+   *   HTML cell content.
+   *
+   * @return $this
+   * @throws \Exception
+   */
+  function thOpenEnd($rowName, $colName, $content) {
+    return $this->tbody->thOpenEnd($rowName, $colName, $content);
+  }
+
+  /**
    * @param Axis $columns
    * @param StaticAttributesMap $tableColAttributes
    *
@@ -181,5 +215,4 @@ class TBodyWrapper implements TableSectionStructureInterface {
   function rowExists($rowName) {
     return $this->tbody->rowExists($rowName);
   }
-
 }

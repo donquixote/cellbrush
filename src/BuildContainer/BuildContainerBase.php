@@ -8,6 +8,8 @@ use Donquixote\Cellbrush\MiniContainer\MiniContainerBase;
 /**
  * Settable properties:
  *
+ * @property string[][] CellContents
+ * @property string[][] CellTagNames
  * @property bool[][] OpenEndCells
  *   Array marking those cells that are open-end.
  *   Format: $[$rowName][$colName] = true.
@@ -20,12 +22,32 @@ class BuildContainerBase extends MiniContainerBase {
 
   public function __construct() {
     $this->defaults = array(
+      'CellContents' => [],
+      'CellTagNames' => [],
       'OpenEndCells' => [],
       'RowAttributes' => new StaticAttributesMap(),
       'RowStripings' => [],
       'TableColAttributes' => new StaticAttributesMap(),
       'SectionColAttributes' => new StaticAttributesMap(),
     );
+  }
+
+  /**
+   * @param string[][] $cellContents
+   *
+   * @see BuildContainerBase::$CellContents
+   */
+  protected function validate_CellContents(array $cellContents) {
+    // No validation, always accept.
+  }
+
+  /**
+   * @param string[][] $cellTagNames
+   *
+   * @see BuildContainerBase::$CellTagNames
+   */
+  protected function validate_CellTagNames(array $cellTagNames) {
+    // No validation, always accept.
   }
 
   /**

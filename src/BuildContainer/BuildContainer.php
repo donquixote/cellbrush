@@ -42,21 +42,12 @@ class BuildContainer extends BuildContainerBase {
   private $columns;
 
   /**
-   * @var Cell\CellInterface[][]
-   *   Array of cells by row name and col name.
-   *   Format: $[$rowName][$colName] = $cell.
-   */
-  private $namedCellsRaw;
-
-  /**
    * @param Axis $rows
    * @param Axis $columns
-   * @param Cell\CellInterface[][] $namedCells
    */
-  function __construct(Axis $rows, Axis $columns, array $namedCells) {
+  function __construct(Axis $rows, Axis $columns) {
     $this->rows = $rows;
     $this->columns = $columns;
-    $this->namedCellsRaw = $namedCells;
     parent::__construct();
   }
 
@@ -82,15 +73,33 @@ class BuildContainer extends BuildContainerBase {
   }
 
   /**
-   * @return Cell\CellInterface[][]
+   * @return Cell\Cell[][]
+   *
    * @see BuildContainer::$NamedCells
    */
   protected function get_NamedCells() {
-    $cells = $this->namedCellsRaw;
-    foreach ($cells as $rowName => &$rowCells) {
+    $cellContents = $this->CellContents;
+    $cellTagNames = $this->CellTagNames;
+    /** @var Cell\Cell[][] $namedCells */
+    $namedCells = [];
+    foreach ($cellContents as $rowName => $rowCellContents) {
+      $rowCellTagNames = isset($cellTagNames[$rowName])
+        ? $cellTagNames[$rowName]
+        : [];
+      $rowNamedCells = [];
+      foreach ($rowCellContents as $colName => $cellContent) {
+        $cellTagName = isset($rowCellTagNames[$colName])
+          ? 'th'
+          : 'td';
+        $cell = new Cell\Cell($cellTagName, $cellContent);
+        $rowNamedCells[$colName] = $cell;
+      }
+      $namedCells[$rowName] = $rowNamedCells;
+    }
+    foreach ($namedCells as $rowName => &$rowCells) {
       $this->NamedColAttributes->enhanceAttributes($rowCells);
     }
-    return $cells;
+    return $namedCells;
   }
 
   /**

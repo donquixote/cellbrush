@@ -9,8 +9,6 @@ use Donquixote\Cellbrush\BuildContainer\BuildContainerBase;
 use Donquixote\Cellbrush\Html\Multiple\DynamicAttributesMap;
 use Donquixote\Cellbrush\Html\Multiple\StaticAttributesMap;
 use Donquixote\Cellbrush\Html\MutableAttributesTrait;
-use Donquixote\Cellbrush\Matrix\CellMap;
-use Donquixote\Cellbrush\Matrix\OpenEndMap;
 use Donquixote\Cellbrush\Handle\RowHandle;
 use Donquixote\Cellbrush\Handle\SectionColHandle;
 
@@ -34,16 +32,6 @@ class TableSection implements TableSectionInterface {
   private $rowAttributes;
 
   /**
-   * @var CellMap
-   */
-  private $cellMap;
-
-  /**
-   * @var OpenEndMap
-   */
-  private $openEndMap;
-
-  /**
    * @var string[][]
    *   Format: $[] = ['odd', 'even']
    */
@@ -57,14 +45,32 @@ class TableSection implements TableSectionInterface {
   private $colAttributes;
 
   /**
+   * @var \Donquixote\Cellbrush\Cell\CellInterface[][]
+   *   Format: $[$rowName][$colName] = $content
+   */
+  private $cellContents = [];
+
+  /**
+   * A marker for cells that should be open-ended.
+   *
+   * @var true[][]
+   *   Format: $[$rowName][$colName] = true
+   */
+  private $openEndCells = [];
+
+  /**
+   * @var string[][]
+   *   Format: $[$rowName][$colName] = 'th'
+   */
+  private $cellTagNames = [];
+
+  /**
    * @param string $tagName
    */
   function __construct($tagName) {
     $this->__constructMutableAttributes();
     $this->tagName = $tagName;
     $this->rows = new DynamicAxis();
-    $this->cellMap = new CellMap();
-    $this->openEndMap = new OpenEndMap();
     $this->colAttributes = new DynamicAttributesMap();
     $this->rowAttributes = new DynamicAttributesMap();
   }
@@ -187,7 +193,7 @@ class TableSection implements TableSectionInterface {
    * @throws \Exception
    */
   function td($rowName, $colName, $content) {
-    $this->cellMap->addCell($rowName, $colName, 'td', $content);
+    $this->cellContents[$rowName][$colName] = $content;
     return $this;
   }
 
@@ -203,7 +209,8 @@ class TableSection implements TableSectionInterface {
    * @throws \Exception
    */
   function th($rowName, $colName, $content) {
-    $this->cellMap->addCell($rowName, $colName, 'th', $content);
+    $this->cellContents[$rowName][$colName] = $content;
+    $this->cellTagNames[$rowName][$colName] = 'th';
     return $this;
   }
 
@@ -221,7 +228,8 @@ class TableSection implements TableSectionInterface {
    * @throws \Exception
    */
   function tdOpenEnd($rowName, $colName, $content) {
-    $this->addOpenEndCell($rowName, $colName, 'td', $content);
+    $this->cellContents[$rowName][$colName] = $content;
+    $this->openEndCells[$rowName][$colName] = true;
     return $this;
   }
 
@@ -239,25 +247,10 @@ class TableSection implements TableSectionInterface {
    * @throws \Exception
    */
   function thOpenEnd($rowName, $colName, $content) {
-    $this->addOpenEndCell($rowName, $colName, 'th', $content);
+    $this->cellContents[$rowName][$colName] = $content;
+    $this->openEndCells[$rowName][$colName] = true;
+    $this->cellTagNames[$rowName][$colName] = 'th';
     return $this;
-  }
-
-  /**
-   * @param string|string[] $rowName
-   *   Row name, group or range.
-   * @param string|string[] $colName
-   *   Column name, group or range.
-   * @param string $tagName
-   *   Either 'td' or 'th'.
-   * @param string $content
-   *   HTML cell content.
-   *
-   * @throws \Exception
-   */
-  private function addOpenEndCell($rowName, $colName, $tagName, $content) {
-    $this->cellMap->addCell($rowName, $colName, $tagName, $content);
-    $this->openEndMap->addCell($rowName, $colName);
   }
 
   /**
@@ -276,11 +269,12 @@ class TableSection implements TableSectionInterface {
 
     $container = new BuildContainer(
       $this->rows->takeSnapshot(),
-      $columns,
-      $this->cellMap->getCells());
+      $columns);
 
     /** @var BuildContainerBase $container */
-    $container->OpenEndCells = $this->openEndMap->getNames();
+    $container->CellContents = $this->cellContents;
+    $container->CellTagNames = $this->cellTagNames;
+    $container->OpenEndCells = $this->openEndCells;
     $container->RowAttributes = clone $this->rowAttributes->staticCopy();
     $container->RowStripings = $this->rowStripings;
     $container->TableColAttributes = $tableColAttributes;
