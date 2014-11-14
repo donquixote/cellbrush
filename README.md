@@ -387,6 +387,14 @@ $table->addColClass('col0', 'allSectionsColumn0');
 $table->tbody()->addColClass('col0', 'tbodyColumn0');
 ```
 
+## Cell classes
+
+Use `addCellClass()` to add classes to individual cells.
+
+```php
+$table->addCellClass('row0', 'col0', 'my_class');
+```
+
 ## Column Reordering
 
 Columns can be reordered even after the cells are already added.
