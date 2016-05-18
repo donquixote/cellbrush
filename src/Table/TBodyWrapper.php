@@ -132,9 +132,9 @@ class TBodyWrapper implements TableSectionStructureInterface {
   }
 
   /**
-   * @param string|string[] $rowName
+   * @param string $rowName
    *   Row name, group or range.
-   * @param string|string[] $colName
+   * @param string $colName
    *   Column name, group or range.
    * @param string $content
    *   HTML cell content.
@@ -148,9 +148,9 @@ class TBodyWrapper implements TableSectionStructureInterface {
   }
 
   /**
-   * @param string|string[] $rowName
+   * @param string $rowName
    *   Row name, group or range.
-   * @param string|string[] $colName
+   * @param string $colName
    *   Column name, group or range.
    * @param string $content
    *   HTML cell content.
@@ -166,9 +166,9 @@ class TBodyWrapper implements TableSectionStructureInterface {
   /**
    * Adds a td cell with a colspan that ends where the next known cell begins.
    *
-   * @param string|string[] $rowName
+   * @param string $rowName
    *   Row name, group or range.
-   * @param string|string[] $colName
+   * @param string $colName
    *   Column name, group or range.
    * @param string $content
    *   HTML cell content.

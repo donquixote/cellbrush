@@ -192,9 +192,9 @@ class TableSection implements TableSectionInterface {
   }
 
   /**
-   * @param string|string[] $rowName
+   * @param string $rowName
    *   Row name, group or range.
-   * @param string|string[] $colName
+   * @param string $colName
    *   Column name, group or range.
    * @param string $content
    *   HTML cell content.
@@ -208,9 +208,9 @@ class TableSection implements TableSectionInterface {
   }
 
   /**
-   * @param string|string[] $rowName
+   * @param string $rowName
    *   Row name, group or range.
-   * @param string|string[] $colName
+   * @param string $colName
    *   Column name, group or range.
    * @param string $content
    *   HTML cell content.

@@ -58,9 +58,9 @@ interface TableSectionStructureInterface extends TableRowsInterface {
   public function addRowStriping(array $striping = ['odd', 'even']);
 
   /**
-   * @param string|string[] $rowName
+   * @param string $rowName
    *   Row name, group or range.
-   * @param string|string[] $colName
+   * @param string $colName
    *   Column name, group or range.
    * @param string $content
    *   HTML cell content.
@@ -71,9 +71,9 @@ interface TableSectionStructureInterface extends TableRowsInterface {
   function td($rowName, $colName, $content);
 
   /**
-   * @param string|string[] $rowName
+   * @param string $rowName
    *   Row name, group or range.
-   * @param string|string[] $colName
+   * @param string $colName
    *   Column name, group or range.
    * @param string $content
    *   HTML cell content.
