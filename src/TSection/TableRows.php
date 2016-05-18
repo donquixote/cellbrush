@@ -174,6 +174,7 @@ class TableRows {
       list($firstRowName, $lastRowName) = $rowRange;
       return $this->rowRangeDoGetRowNames($firstRowName, $lastRowName);
     }
+    /** @var string $rowRange */
     if (isset($this->rowGroups[$rowRange])) {
       return $this->rowGroups[$rowRange];
     }
