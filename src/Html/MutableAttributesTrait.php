@@ -48,7 +48,7 @@ trait MutableAttributesTrait {
    *
    * @see AttributesGetterInterface::renderAttributes()
    */
-  protected function renderAttributes() {
+  public function renderAttributes() {
     return $this->attributes->renderAttributes();
   }
 
@@ -60,7 +60,7 @@ trait MutableAttributesTrait {
    *
    * @see AttributesGetterInterface::renderTag()
    */
-  protected function renderTag($tagName, $content) {
+  public function renderTag($tagName, $content) {
     return $this->attributes->renderTag($tagName, $content);
   }
 
@@ -71,7 +71,7 @@ trait MutableAttributesTrait {
    *
    * @see AttributesGetterInterface::createTag()
    */
-  protected function createTag($tagName) {
+  public function createTag($tagName) {
     return $this->attributes->createTag($tagName);
   }
 
