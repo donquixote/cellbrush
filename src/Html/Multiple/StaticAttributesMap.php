@@ -33,8 +33,7 @@ class StaticAttributesMap extends AttributesMapBase {
       }
     }
     foreach ($this->attributes as $name => $attributes) {
-      // Currently the ->setAttribute() method is not part of any interface.
-      if (isset($rowCells[$name]) && method_exists($rowCells[$name], 'setAttribute')) {
+      if (isset($rowCells[$name])) {
         foreach ($attributes as $key => $value) {
           $rowCells[$name] = $rowCells[$name]->setAttribute($key, $value);
         }

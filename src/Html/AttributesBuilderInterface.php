@@ -18,4 +18,12 @@ interface AttributesBuilderInterface {
    */
   function addClasses(array $classes);
 
+  /**
+   * @param string $key
+   * @param string $value
+   *
+   * @return static
+   */
+  function setAttribute($key, $value);
+
 }
