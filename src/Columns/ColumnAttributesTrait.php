@@ -2,6 +2,9 @@
 
 namespace Donquixote\Cellbrush\Columns;
 
+/**
+ * @see ColumnAttributesInterface
+ */
 trait ColumnAttributesTrait {
 
   use ColumnClassesTrait;
@@ -11,11 +14,7 @@ trait ColumnAttributesTrait {
   }
 
   /**
-   * @param string $colName
-   * @param string $name
-   * @param string $value
-   *
-   * @return $this
+   * {@inheritdoc}
    */
   public function setColAttribute($colName, $name, $value) {
     $this->colAttributes->nameSetAttribute($colName, $name, $value);
