@@ -28,10 +28,7 @@ class ShadowCell implements CellInterface {
   }
 
   /**
-   * @param string $key
-   * @param string $value
-   *
-   * @return static
+   * {@inheritdoc}
    */
   function setAttribute($key, $value) {
     // Do nothing.
